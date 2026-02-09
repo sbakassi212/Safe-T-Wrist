@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacts d'urgence - MediWatch</title>
+    <link rel="stylesheet" href="../html/css/acceuil.css">
+</head>
+<body class="dashboard-page">
+    <!--  Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <span class="logo-icon">❤️</span>
+            <span class="logo-text">MediWatch</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item">
+                <span class="nav-icon">📊</span>
+                <span>Tableau de bord</span>
+            </a>
+            <a href="profil.html" class="nav-item">
+                <span class="nav-icon">👤</span>
+                <span>Mon profil</span>
+            </a>
+            <a href="contacts.html" class="nav-item active">
+                <span class="nav-icon">👥</span>
+                <span>Contacts d'urgence</span>
+            </a>
+            <a href="historique.html" class="nav-item">
+                <span class="nav-icon">📋</span>
+                <span>Historique</span>
+            </a>
+            <a href="donnees-sante.html" class="nav-item">
+                <span class="nav-icon">💓</span>
+                <span>Données de santé</span>
+            </a>
+            <a href="parametres.html" class="nav-item">
+                <span class="nav-icon">⚙️</span>
+                <span>Paramètres</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="connexion.html" class="nav-item logout">
+                <span class="nav-icon">🚪</span>
+                <span>Déconnexion</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <h1>Contacts d'urgence</h1>
+            <div class="user-info">
+                <span class="user-name">Jean Dupont</span>
+                <div class="user-avatar">JD</div>
+            </div>
+        </header>
+
+        <!-- Contacts Content -->
+        <div class="dashboard-container">
+            <!-- Info Banner -->
+            <div class="info-banner">
+                <span class="info-icon">ℹ️</span>
+                <p>Ces personnes seront automatiquement alertées par SMS et email en cas de détection d'anomalie ou de chute.</p>
+            </div>
+
+            <!-- Add Contact Button -->
+            <div class="page-actions">
+                <button class="btn btn-primary" onclick="toggleAddForm()">
+                    <span>➕</span> Ajouter un contact
+                </button>
+            </div>
+
+            <!-- Add Contact Form (hidden by default) -->
+            <div class="card add-contact-form" id="addContactForm" style="display: none;">
+                <h3>Nouveau contact d'urgence</h3>
+                <form>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="prenom">Prénom *</label>
+                            <input type="text" id="prenom" name="prenom" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nom">Nom *</label>
+                            <input type="text" id="nom" name="nom" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="relation">Relation *</label>
+                            <select id="relation" name="relation" required>
+                                <option value="">Sélectionner...</option>
+                                <option value="famille">Famille</option>
+                                <option value="ami">Ami(e)</option>
+                                <option value="medecin">Médecin</option>
+                                <option value="aidant">Aidant</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="priorite">Priorité</label>
+                            <select id="priorite" name="priorite">
+                                <option value="1">1 - Très haute</option>
+                                <option value="2" selected>2 - Haute</option>
+                                <option value="3">3 - Moyenne</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telephone">Téléphone *</label>
+                        <input type="tel" id="telephone" name="telephone" placeholder="+33 6 12 34 56 78" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" placeholder="exemple@email.fr" required>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" name="notif_sms" checked>
+                            <span>Activer les alertes SMS</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="notif_email" checked>
+                            <span>Activer les alertes Email</span>
+                        </label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="toggleAddForm()">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Enregistrer le contact</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Contacts List -->
+            <div class="contacts-grid">
+                <!-- Contact 1 -->
+                <div class="contact-card priority-1">
+                    <div class="contact-header">
+                        <div class="contact-avatar">MR</div>
+                        <div class="contact-info">
+                            <h3>Marie Rousseau</h3>
+                            <span class="contact-relation">Fille</span>
+                        </div>
+                        <div class="priority-badge priority-1">Priorité 1</div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">📱</span>
+                            <span>+33 6 12 34 56 78</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">✉️</span>
+                            <span>marie.rousseau@email.fr</span>
+                        </div>
+                    </div>
+                    <div class="contact-notifications">
+                        <span class="notif-badge active">SMS ✓</span>
+                        <span class="notif-badge active">Email ✓</span>
+                    </div>
+                    <div class="contact-actions">
+                        <button class="btn-icon" title="Modifier">✏️</button>
+                        <button class="btn-icon danger" title="Supprimer">🗑️</button>
+                    </div>
+                </div>
+
+                <!-- Contact 2 -->
+                <div class="contact-card priority-2">
+                    <div class="contact-header">
+                        <div class="contact-avatar">PD</div>
+                        <div class="contact-info">
+                            <h3>Pierre Dubois</h3>
+                            <span class="contact-relation">Médecin traitant</span>
+                        </div>
+                        <div class="priority-badge priority-2">Priorité 2</div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">📱</span>
+                            <span>+33 6 98 76 54 32</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">✉️</span>
+                            <span>dr.dubois@cabinet.fr</span>
+                        </div>
+                    </div>
+                    <div class="contact-notifications">
+                        <span class="notif-badge">SMS</span>
+                        <span class="notif-badge active">Email ✓</span>
+                    </div>
+                    <div class="contact-actions">
+                        <button class="btn-icon" title="Modifier">✏️</button>
+                        <button class="btn-icon danger" title="Supprimer">🗑️</button>
+                    </div>
+                </div>
+
+                <!-- Contact 3 -->
+                <div class="contact-card priority-2">
+                    <div class="contact-header">
+                        <div class="contact-avatar">SL</div>
+                        <div class="contact-info">
+                            <h3>Sophie Laurent</h3>
+                            <span class="contact-relation">Amie</span>
+                        </div>
+                        <div class="priority-badge priority-2">Priorité 2</div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">📱</span>
+                            <span>+33 7 45 67 89 01</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">✉️</span>
+                            <span>sophie.l@email.fr</span>
+                        </div>
+                    </div>
+                    <div class="contact-notifications">
+                        <span class="notif-badge active">SMS ✓</span>
+                        <span class="notif-badge active">Email ✓</span>
+                    </div>
+                    <div class="contact-actions">
+                        <button class="btn-icon" title="Modifier">✏️</button>
+                        <button class="btn-icon danger" title="Supprimer">🗑️</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test Alert Section -->
+            <div class="card test-alert-section">
+                <h3>Tester le système d'alerte</h3>
+                <p>Envoyez une alerte de test à vos contacts pour vérifier que tout fonctionne correctement.</p>
+                <button class="btn btn-warning">
+                    <span>📢</span> Envoyer une alerte de test
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleAddForm() {
+            const form = document.getElementById('addContactForm');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord - MediWatch</title>
+    <link rel="stylesheet" href="../html/css/acceuil.css">
+</head>
+<body class="dashboard-page">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <span class="logo-icon">❤️</span>
+            <span class="logo-text">MediWatch</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item active">
+                <span class="nav-icon">📊</span>
+                <span>Tableau de bord</span>
+            </a>
+            <a href="profil.html" class="nav-item">
+                <span class="nav-icon">👤</span>
+                <span>Mon profil</span>
+            </a>
+            <a href="contacts.html" class="nav-item">
+                <span class="nav-icon">👥</span>
+                <span>Contacts d'urgence</span>
+            </a>
+            <a href="historique.html" class="nav-item">
+                <span class="nav-icon">📋</span>
+                <span>Historique</span>
+            </a>
+            <a href="donnees-sante.html" class="nav-item">
+                <span class="nav-icon">💓</span>
+                <span>Données de santé</span>
+            </a>
+            <a href="parametres.html" class="nav-item">
+                <span class="nav-icon">⚙️</span>
+                <span>Paramètres</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="connexion.html" class="nav-item logout">
+                <span class="nav-icon">🚪</span>
+                <span>Déconnexion</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <h1>Tableau de bord</h1>
+            <div class="user-info">
+                <span class="user-name">Jean Dupont</span>
+                <div class="user-avatar">JD</div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-container">
+            <!-- Status Card -->
+            <div class="status-banner">
+                <div class="status-icon">✅</div>
+                <div class="status-info">
+                    <h3>Bracelet connecté</h3>
+                    <p>Dernière synchronisation : il y a 2 minutes</p>
+                </div>
+                <div class="battery-status">
+                    <span>🔋 85%</span>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card heart-rate">
+                    <div class="stat-header">
+                        <span class="stat-icon">💓</span>
+                        <h3>Fréquence cardiaque</h3>
+                    </div>
+                    <div class="stat-value">72 <span class="unit">bpm</span></div>
+                    <div class="stat-status normal">Normal</div>
+                    <div class="mini-chart">
+                        <div class="chart-bar" style="height: 60%"></div>
+                        <div class="chart-bar" style="height: 75%"></div>
+                        <div class="chart-bar" style="height: 65%"></div>
+                        <div class="chart-bar" style="height: 80%"></div>
+                        <div class="chart-bar" style="height: 70%"></div>
+                        <div class="chart-bar" style="height: 72%"></div>
+                    </div>
+                </div>
+
+                <div class="stat-card activity">
+                    <div class="stat-header">
+                        <span class="stat-icon">🚶</span>
+                        <h3>Activité</h3>
+                    </div>
+                    <div class="stat-value">4,523 <span class="unit">pas</span></div>
+                    <div class="stat-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 45%"></div>
+                        </div>
+                        <span class="progress-label">Objectif : 10,000 pas</span>
+                    </div>
+                </div>
+
+                <div class="stat-card alerts">
+                    <div class="stat-header">
+                        <span class="stat-icon">🔔</span>
+                        <h3>Alertes</h3>
+                    </div>
+                    <div class="stat-value">0 <span class="unit">aujourd'hui</span></div>
+                    <div class="stat-status success">Aucune alerte</div>
+                </div>
+
+                <div class="stat-card contacts">
+                    <div class="stat-header">
+                        <span class="stat-icon">👥</span>
+                        <h3>Contacts actifs</h3>
+                    </div>
+                    <div class="stat-value">3 <span class="unit">contacts</span></div>
+                    <a href="contacts.html" class="stat-link">Gérer →</a>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Activité récente</h2>
+                    <a href="historique.html" class="view-all">Voir tout →</a>
+                </div>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon success">✓</div>
+                        <div class="activity-details">
+                            <h4>Mesure cardiaque normale</h4>
+                            <p>Fréquence : 75 bpm</p>
+                        </div>
+                        <div class="activity-time">Il y a 5 min</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon info">ℹ</div>
+                        <div class="activity-details">
+                            <h4>Synchronisation effectuée</h4>
+                            <p>Données transmises avec succès</p>
+                        </div>
+                        <div class="activity-time">Il y a 2 h</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon warning">⚠</div>
+                        <div class="activity-details">
+                            <h4>Batterie faible</h4>
+                            <p>Pensez à recharger votre bracelet</p>
+                        </div>
+                        <div class="activity-time">Il y a 1 jour</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h2>Actions rapides</h2>
+                <div class="actions-grid">
+                    <a href="contacts.html" class="action-card">
+                        <span class="action-icon">➕</span>
+                        <span>Ajouter un contact</span>
+                    </a>
+                    <a href="donnees-sante.html" class="action-card">
+                        <span class="action-icon">📊</span>
+                        <span>Voir mes données</span>
+                    </a>
+                    <a href="parametres.html" class="action-card">
+                        <span class="action-icon">⚙️</span>
+                        <span>Configurer les alertes</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

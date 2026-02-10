@@ -40,9 +40,7 @@
             <!-- Settings Tabs -->
             <div class="settings-tabs">
                 <button class="settings-tab active" onclick="showTab('notifications')"><span>🔔</span> Notifications</button>
-                <button class="settings-tab" onclick="showTab('alerts')"><span>🚨</span> Alertes</button>
                 <button class="settings-tab" onclick="showTab('device')"><span>⌚</span> Bracelet</button>
-                <button class="settings-tab" onclick="showTab('health')"><span>💓</span> Santé</button>
                 <button class="settings-tab" onclick="showTab('privacy')"><span>🔒</span> Confidentialité</button>
             </div>
 
@@ -92,46 +90,7 @@
                 </div>
             </div>
 
-            <!-- Alerts Tab -->
-            <div class="settings-content" id="alerts-content" style="display: none;">
-                <div class="card">
-                    <div class="card-header"><h2>🚨 Configuration des Alertes d'Urgence</h2><p class="card-subtitle">Définissez les seuils de déclenchement</p></div>
-                    <div class="alert-warning-box">
-                        <span class="warning-icon">⚠️</span>
-                        <p>Les paramètres par défaut sont recommandés par des professionnels de santé. Consultez votre médecin avant de les modifier.</p>
-                    </div>
-                    <div class="settings-section">
-                        <h3>Fréquence Cardiaque</h3>
-                        <div class="threshold-setting">
-                            <div class="threshold-info"><h4>Fréquence cardiaque basse (Bradycardie)</h4><p>Alerte si la fréquence descend en dessous de ce seuil</p></div>
-                            <div class="threshold-input"><input type="number" value="50" min="40" max="60"><span class="input-suffix">bpm</span></div>
-                        </div>
-                        <div class="threshold-setting">
-                            <div class="threshold-info"><h4>Fréquence cardiaque haute (Tachycardie)</h4><p>Alerte si la fréquence dépasse ce seuil au repos</p></div>
-                            <div class="threshold-input"><input type="number" value="120" min="100" max="150"><span class="input-suffix">bpm</span></div>
-                        </div>
-                    </div>
-                    <div class="settings-section">
-                        <h3>Détection de Chute</h3>
-                        <div class="setting-item">
-                            <div class="setting-info"><h4>Activer la détection automatique</h4><p>Déclencher une alerte en cas de chute détectée</p></div>
-                            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
-                        </div>
-                        <div class="setting-item">
-                            <div class="setting-info"><h4>Sensibilité de détection</h4><p>Niveau de sensibilité du capteur de chute</p></div>
-                            <select class="setting-select">
-                                <option value="low">Faible (moins de fausses alertes)</option>
-                                <option value="medium" selected>Moyenne (recommandé)</option>
-                                <option value="high">Élevée (détection maximale)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="settings-actions">
-                        <button class="btn btn-secondary">Réinitialiser</button>
-                        <button class="btn btn-primary">Enregistrer</button>
-                    </div>
-                </div>
-            </div>
+           
 
             <!-- Device Tab -->
             <div class="settings-content" id="device-content" style="display: none;">
@@ -175,42 +134,6 @@
                 </div>
             </div>
 
-            <!-- Health Tab -->
-            <div class="settings-content" id="health-content" style="display: none;">
-                <div class="card">
-                    <div class="card-header"><h2>💓 Paramètres de Santé</h2><p class="card-subtitle">Personnalisez vos objectifs santé</p></div>
-                    <div class="settings-section">
-                        <h3>Objectifs d'Activité</h3>
-                        <div class="threshold-setting">
-                            <div class="threshold-info"><h4>Objectif de pas quotidien</h4><p>Nombre de pas à atteindre chaque jour</p></div>
-                            <div class="threshold-input"><input type="number" value="10000" step="500"><span class="input-suffix">pas</span></div>
-                        </div>
-                        <div class="threshold-setting">
-                            <div class="threshold-info"><h4>Durée d'exercice quotidien</h4><p>Minutes d'activité physique par jour</p></div>
-                            <div class="threshold-input"><input type="number" value="30" step="5"><span class="input-suffix">min</span></div>
-                        </div>
-                    </div>
-                    <div class="settings-section">
-                        <h3>Rappels d'Activité</h3>
-                        <div class="setting-item">
-                            <div class="setting-info"><h4>Rappel de bouger</h4><p>Notification si inactif pendant trop longtemps</p></div>
-                            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
-                        </div>
-                    </div>
-                    <div class="settings-section">
-                        <h3>Unités de Mesure</h3>
-                        <div class="setting-item">
-                            <div class="setting-info"><h4>Distance</h4></div>
-                            <select class="setting-select"><option value="km" selected>Kilomètres (km)</option><option value="mi">Miles (mi)</option></select>
-                        </div>
-                        <div class="setting-item">
-                            <div class="setting-info"><h4>Poids</h4></div>
-                            <select class="setting-select"><option value="kg" selected>Kilogrammes (kg)</option><option value="lb">Livres (lb)</option></select>
-                        </div>
-                    </div>
-                    <div class="settings-actions"><button class="btn btn-primary">Enregistrer</button></div>
-                </div>
-            </div>
 
             <!-- Privacy Tab -->
             <div class="settings-content" id="privacy-content" style="display: none;">

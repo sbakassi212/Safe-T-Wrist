@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Profil - MediWatch</title>
+    <link rel="stylesheet" href="../html/css/acceuil.css">
+</head>
+<body class="dashboard-page">
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <span class="logo-icon">❤️</span>
+            <span class="logo-text">MediWatch</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item">
+                <span class="nav-icon">📊</span>
+                <span>Tableau de bord</span>
+            </a>
+            <a href="profil.html" class="nav-item active">
+                <span class="nav-icon">👤</span>
+                <span>Mon profil</span>
+            </a>
+            <a href="contact.html" class="nav-item">
+                <span class="nav-icon">👥</span>
+                <span>Contacts d'urgence</span>
+            </a>
+            <a href="historique.html" class="nav-item">
+                <span class="nav-icon">📋</span>
+                <span>Historique</span>
+            </a>
+            <a href="sante.html" class="nav-item">
+                <span class="nav-icon">💓</span>
+                <span>Données de santé</span>
+            </a>
+            <a href="parametre.html" class="nav-item">
+                <span class="nav-icon">⚙️</span>
+                <span>Paramètres</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="connexion.html" class="nav-item logout">
+                <span class="nav-icon">🚪</span>
+                <span>Déconnexion</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <h1>Mon Profil</h1>
+            <div class="user-info">
+                <span class="user-name">Jean Dupont</span>
+                <div class="user-avatar">JD</div>
+            </div>
+        </header>
+
+        <div class="dashboard-container">
+            
+            <div class="info-banner">
+                <span class="info-icon">ℹ️</span>
+                <p>Vos données de santé sont chiffrées et ne sont accessibles qu'à vous et vos contacts d'urgence en cas d'alerte.</p>
+            </div>
+
+            <div class="form-row"> <div class="profile-column">
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Informations Personnelles</h2>
+                            <button class="btn-icon">✏️</button>
+                        </div>
+                        <form class="add-contact-form"> <div class="form-group">
+                                <label>Prénom</label>
+                                <input type="text" value="Jean" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Nom</label>
+                                <input type="text" value="Dupont" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Date de naissance</label>
+                                <input type="date" value="1955-03-15" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Genre</label>
+                                <select disabled>
+                                    <option value="homme" selected>Homme</option>
+                                    <option value="femme">Femme</option>
+                                </select>
+                            </div>
+                            <div class="form-actions" style="display:none;">
+                                <button type="button" class="btn btn-secondary">Annuler</button>
+                                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Sécurité</h2>
+                        </div>
+                        <div class="activity-list"> <div class="activity-item">
+                                <div class="activity-icon info">🔒</div>
+                                <div class="activity-details">
+                                    <h4>Mot de passe</h4>
+                                    <p>Modifié il y a 30 jours</p>
+                                </div>
+                                <button class="btn btn-secondary">Modifier</button>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon success">📱</div>
+                                <div class="activity-details">
+                                    <h4>Double authentification</h4>
+                                    <p>Activée sur votre mobile</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-column">
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Fiche Médicale</h2>
+                            <button class="btn-icon">✏️</button>
+                        </div>
+                        <form class="add-contact-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Groupe Sanguin</label>
+                                    <input type="text" value="A+" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label>Poids (kg)</label>
+                                    <input type="number" value="75" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Allergies</label>
+                                <input type="text" value="Pénicilline, Pollen" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Pathologies</label>
+                                <input type="text" value="Hypertension" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Médecin Traitant</label>
+                                <input type="text" value="Dr. Pierre Dubois" disabled>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Mon Bracelet</h2>
+                        </div>
+                        <div class="status-banner"> <div class="status-icon">⌚</div>
+                            <div class="status-info">
+                                <h3>MediWatch Pro v2</h3>
+                                <p>Appareil synchronisé</p>
+                            </div>
+                            <div class="battery-status">85% 🔋</div>
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn btn-secondary">Synchroniser</button>
+                            <button class="btn btn-warning">Signaler un problème</button>
+                        </div>
+                    </div>
+
+                    <div class="card" style="border-top: 4px solid var(--danger);">
+                        <div class="card-header">
+                            <h2>Gestion des données</h2>
+                        </div>
+                        <p style="color: var(--gray); font-size: 0.9rem; margin-bottom: 1rem;">
+                            Conformément au RGPD, vous pouvez exporter ou supprimer vos données.
+                        </p>
+                        <div class="form-actions" style="justify-content: flex-start;">
+                            <button class="btn btn-secondary">📥 Exporter mes données</button>
+                            <button class="btn btn-login" style="background: var(--danger);">🗑️ Supprimer mon compte</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div> </div> </main>
+</body>
+</html>

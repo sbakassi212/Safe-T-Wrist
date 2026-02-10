@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paramètres - MediWatch</title>
+    <link rel="stylesheet" href="../html/css/acceuil.css">
+</head>
+<body class="dashboard-page">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <span class="logo-icon">❤️</span>
+            <span class="logo-text">MediWatch</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span><span>Tableau de bord</span></a>
+            <a href="profil.html" class="nav-item"><span class="nav-icon">👤</span><span>Mon profil</span></a>
+            <a href="contact.html" class="nav-item"><span class="nav-icon">👥</span><span>Contacts d'urgence</span></a>
+            <a href="historique.html" class="nav-item"><span class="nav-icon">📋</span><span>Historique</span></a>
+            <a href="sante.html" class="nav-item"><span class="nav-icon">💓</span><span>Données de santé</span></a>
+            <a href="parametre.html" class="nav-item active"><span class="nav-icon">⚙️</span><span>Paramètres</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="connexion.html" class="nav-item logout"><span class="nav-icon">🚪</span><span>Déconnexion</span></a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="top-bar">
+            <h1>Paramètres</h1>
+            <div class="user-info">
+                <span class="user-name">Jean Dupont</span>
+                <div class="user-avatar">JD</div>
+            </div>
+        </header>
+
+        <div class="dashboard-container">
+            <!-- Settings Tabs -->
+            <div class="settings-tabs">
+                <button class="settings-tab active" onclick="showTab('notifications')"><span>🔔</span> Notifications</button>
+                <button class="settings-tab" onclick="showTab('alerts')"><span>🚨</span> Alertes</button>
+                <button class="settings-tab" onclick="showTab('device')"><span>⌚</span> Bracelet</button>
+                <button class="settings-tab" onclick="showTab('health')"><span>💓</span> Santé</button>
+                <button class="settings-tab" onclick="showTab('privacy')"><span>🔒</span> Confidentialité</button>
+            </div>
+
+            <!-- Notifications Tab -->
+            <div class="settings-content" id="notifications-content">
+                <div class="card">
+                    <div class="card-header"><h2>🔔 Notifications</h2><p class="card-subtitle">Gérez vos préférences de notifications</p></div>
+                    <div class="settings-section">
+                        <h3>Notifications Push</h3>
+                        <div class="setting-item">
+                            <div class="setting-info"><h4>Activer les notifications push</h4><p>Recevoir des notifications sur cet appareil</p></div>
+                            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info"><h4>Notifications d'alertes critiques</h4><p>Chutes détectées, anomalies cardiaques</p></div>
+                            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info"><h4>Rappels de synchronisation</h4><p>Vous rappeler de synchroniser votre bracelet</p></div>
+                            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h3>Notifications Email</h3>
+                        <div class="setting-item">
+                            <div class="setting-info"><h4>Résumé hebdomadaire</h4><p>Rapport de santé envoyé chaque lundi</p></div>
+                            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info"><h4>Rappels de batterie faible</h4><p>Email lorsque la batterie du bracelet est faible</p></div>
+                            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h3>Mode Ne Pas Déranger</h3>
+                        <div class="setting-item">
+                            <div class="setting-info"><h4>Activer le mode silencieux</h4><p>Désactiver temporairement les notifications non-critiques</p></div>
+                            <label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label>
+                        </div>
+                        <div class="form-group">
+                            <label>Heures de silence</label>
+                            <div class="time-range"><input type="time" value="22:00"><span>à</span><input type="time" value="07:00"></div>
+                            <p class="form-help">Les alertes critiques seront toujours envoyées</p>
+                        </div>
+                    </div>
+                    <div class="settings-actions"><button class="btn btn-primary">Enregistrer les modifications</button></div>
+                </div>
+            </div>
+
+            <!-- Alerts Tab -->
+            <div class="settings-content" id="alerts-content" style="display: none;">
+                <div class="card">
+                    <div class="card-header"><h2>🚨 Configuration des Alertes d'Urgence</h2><p class="card-subtitle">Définissez les seuils de déclenchement</p></div>
+                    <div class="alert-warning-box">
+                        <span class="warning-icon">⚠️</span>
+                        <p>Les paramètres par défaut sont recommandés par des professionnels de santé. Consultez votre médecin avant de les modifier.</p>
+                    </div>
+                    <div class="settings-section">
+                        <h3>Fréquence Cardiaque</h3>
+                        <div class="threshold-setting">
+                            <div class="threshold-info"><h4>Fréquence cardiaque basse (Bradycardie)</h4><p>Alerte si la fréquence descend en dessous de ce seuil</p></div>
+                            <div class="threshold-input"><input type="number" value="50" min="40" max="60"><span class="input-suffix">bpm</span></div>
+                        </div>
+                        <div class="threshold-setting">
+                            <div class="threshold-info"><h4>Fréquence cardiaque haute (Tachycardie)</h4><p>Alerte si la fréquence dépasse ce seuil au repos</p></div>
+                            <div class="threshold-input"><input type="number" value="120" min="100" max="150"><span class="input-suffix">bpm</span></div>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h3>Détection de Chute</h3>
+                        <div class="setting-item">
+                            <div class="setting-info"><h4>Activer la détection automatique</h4><p>Déclencher une alerte en cas de chute détectée</p></div>
+                            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info"><h4>Sensibilité de détection</h4><p>Niveau de sensibilité du capteur de chute</p></div>
+                            <select class="setting-select">
+                                <option value="low">Faible (moins de fausses alertes)</option>
+                                <option value="medium" selected>Moyenne (recommandé)</option>
+                                <option value="high">Élevée (détection maximale)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="settings-actions">
+                        <button class="btn btn-secondary">Réinitialiser</button>
+                        <button class="btn btn-primary">Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Device Tab -->
+            <div class="settings-content" id="device-content" style="display: none;">
+                <div class="card">
+                    <div class="card-header"><h2>⌚ Paramètres du Bracelet</h2><p class="card-subtitle">Configuration de votre bracelet MediWatch</p></div>
+                    <div class="settings-section">
+                        <h3>Synchronisation</h3>
+                        <div class="setting-item">
+                            <div class="setting-info"><h4>Synchronisation automatique</h4><p>Synchroniser les données automatiquement</p></div>
+                            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info"><h4>Fréquence de synchronisation</h4><p>À quelle fréquence synchroniser les données</p></div>
+                            <select class="setting-select">
+                                <option value="5">Toutes les 5 minutes</option>
+                                <option value="15" selected>Toutes les 15 minutes</option>
+                                <option value="30">Toutes les 30 minutes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h3>Capteurs</h3>
+                        <div class="setting-item">
+                            <div class="setting-info"><h4>Fréquence cardiaque continue</h4><p>Mesurer la fréquence cardiaque en continu</p></div>
+                            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info"><h4>Suivi du sommeil</h4><p>Analyser automatiquement votre sommeil</p></div>
+                            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h3>Mise à Jour</h3>
+                        <div class="firmware-info">
+                            <p><strong>Version actuelle :</strong> v2.1.4</p>
+                            <p><strong>Dernière vérification :</strong> Il y a 2 jours</p>
+                            <button class="btn btn-primary" style="margin-top: 1rem;">Rechercher des mises à jour</button>
+                        </div>
+                    </div>
+                    <div class="settings-actions"><button class="btn btn-primary">Enregistrer</button></div>
+                </div>
+            </div>
+
+            <!-- Health Tab -->
+            <div class="settings-content" id="health-content" style="display: none;">
+                <div class="card">
+                    <div class="card-header"><h2>💓 Paramètres de Santé</h2><p class="card-subtitle">Personnalisez vos objectifs santé</p></div>
+                    <div class="settings-section">
+                        <h3>Objectifs d'Activité</h3>
+                        <div class="threshold-setting">
+                            <div class="threshold-info"><h4>Objectif de pas quotidien</h4><p>Nombre de pas à atteindre chaque jour</p></div>
+                            <div class="threshold-input"><input type="number" value="10000" step="500"><span class="input-suffix">pas</span></div>
+                        </div>
+                        <div class="threshold-setting">
+                            <div class="threshold-info"><h4>Durée d'exercice quotidien</h4><p>Minutes d'activité physique par jour</p></div>
+                            <div class="threshold-input"><input type="number" value="30" step="5"><span class="input-suffix">min</span></div>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h3>Rappels d'Activité</h3>
+                        <div class="setting-item">
+                            <div class="setting-info"><h4>Rappel de bouger</h4><p>Notification si inactif pendant trop longtemps</p></div>
+                            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h3>Unités de Mesure</h3>
+                        <div class="setting-item">
+                            <div class="setting-info"><h4>Distance</h4></div>
+                            <select class="setting-select"><option value="km" selected>Kilomètres (km)</option><option value="mi">Miles (mi)</option></select>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info"><h4>Poids</h4></div>
+                            <select class="setting-select"><option value="kg" selected>Kilogrammes (kg)</option><option value="lb">Livres (lb)</option></select>
+                        </div>
+                    </div>
+                    <div class="settings-actions"><button class="btn btn-primary">Enregistrer</button></div>
+                </div>
+            </div>
+
+            <!-- Privacy Tab -->
+            <div class="settings-content" id="privacy-content" style="display: none;">
+                <div class="card">
+                    <div class="card-header"><h2>🔒 Confidentialité et Données</h2><p class="card-subtitle">Contrôlez vos données personnelles</p></div>
+                    <div class="settings-section">
+                        <h3>Collecte de Données</h3>
+                        <div class="setting-item">
+                            <div class="setting-info"><h4>Données de localisation</h4><p>Permettre l'accès à votre position pour les alertes d'urgence</p></div>
+                            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info"><h4>Analyse d'utilisation</h4><p>Aider à améliorer l'application avec des données anonymisées</p></div>
+                            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h3>Partage de Données</h3>
+                        <div class="setting-item">
+                            <div class="setting-info"><h4>Partager avec les professionnels de santé</h4><p>Autoriser votre médecin à accéder à vos données</p></div>
+                            <label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h3>Gestion des Données RGPD</h3>
+                        <div class="privacy-actions">
+                            <div class="privacy-action-item">
+                                <div><h4>Télécharger mes données</h4><p>Recevoir une copie de toutes vos données personnelles</p></div>
+                                <button class="btn btn-secondary">📥 Télécharger</button>
+                            </div>
+                            <div class="privacy-action-item">
+                                <div><h4>Politique de confidentialité</h4><p>Consulter notre politique de confidentialité complète</p></div>
+                                <button class="btn btn-secondary">📄 Lire</button>
+                            </div>
+                            <div class="privacy-action-item">
+                                <div><h4>Supprimer mon compte</h4><p>Suppression définitive de toutes vos données</p></div>
+                                <button class="btn btn-danger">🗑️ Supprimer définitivement</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h3>Sécurité</h3>
+                        <div class="setting-item">
+                            <div class="setting-info"><h4>Chiffrement des données</h4><p>Toutes vos données sont chiffrées de bout en bout</p></div>
+                            <span class="security-badge">🔒 Actif</span>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info"><h4>Conformité RGPD</h4><p>Respect du Règlement Général sur la Protection des Données</p></div>
+                            <span class="security-badge">✓ Conforme</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function showTab(tabName) {
+            document.querySelectorAll('.settings-content').forEach(c => c.style.display = 'none');
+            document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabName + '-content').style.display = 'block';
+            event.target.closest('.settings-tab').classList.add('active');
+        }
+    </script>
+</body>
+</html>

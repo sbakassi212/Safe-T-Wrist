@@ -1054,6 +1054,13 @@ body {
     background: #fee2e2;
     color: #991b1b;
 }
+.health-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    align-items: start; /* <--- AJOUTE CETTE LIGNE ICI */
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
 
 .priority-badge.priority-2 {
     background: #fef3c7;

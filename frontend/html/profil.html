@@ -57,51 +57,48 @@
         </header>
 
         <div class="dashboard-container">
-            
-
-            <div class="form-row"> <div class="profile-column">
-                    
+            <div class="form-row">
+                <div class="profile-column">
                     <div class="card">
                         <div class="card-header">
                             <h2>Informations Personnelles</h2>
                             <button class="btn-icon">✏️</button>
                         </div>
-                        <form class="add-contact-form"> <div class="form-group">
+                        <form class="add-contact-form">
+                            <div class="form-group">
                                 <label>Prénom</label>
-                                <input type="text" value="Jean" disabled>
+                                <input type="text" value="Jean">
                             </div>
                             <div class="form-group">
                                 <label>Nom</label>
-                                <input type="text" value="Dupont" disabled>
+                                <input type="text" value="Dupont">
                             </div>
                             <div class="form-group">
                                 <label>Date de naissance</label>
-                                <input type="date" value="1955-03-15" disabled>
+                                <input type="date" value="1955-03-15">
                             </div>
                             <div class="form-group">
                                 <label>Genre</label>
-                                <select disabled>
+                                <select>
                                     <option value="homme" selected>Homme</option>
                                     <option value="femme">Femme</option>
                                 </select>
                             </div>
-                            <div class="form-actions" style="display:none;">
+                            <div class="form-actions">
                                 <button type="button" class="btn btn-secondary">Annuler</button>
                                 <button type="submit" class="btn btn-primary">Enregistrer</button>
                             </div>
                         </form>
                     </div>
-
-                  
+                </div>
 
                 <div class="profile-column">
-                    
-
                     <div class="card">
                         <div class="card-header">
                             <h2>Mon Bracelet</h2>
                         </div>
-                        <div class="status-banner"> <div class="status-icon">⌚</div>
+                        <div class="status-banner">
+                            <div class="status-icon">⌚</div>
                             <div class="status-info">
                                 <h3>MediWatch Pro v2</h3>
                                 <p>Appareil synchronisé</p>
@@ -119,15 +116,7 @@
                             <h2>Gestion des données</h2>
                         </div>
                         <p style="color: var(--gray); font-size: 0.9rem; margin-bottom: 1rem;">
-                            Conformément au RGPD, vous pouvez exporter ou supprimer vos données.
+                            Conformément au RGPD, vous pouvez  supprimer vos données.
                         </p>
                         <div class="form-actions" style="justify-content: flex-start;">
-                            <button class="btn btn-secondary">📥 Exporter mes données</button>
-                            <button class="btn btn-login" style="background: var(--danger);">🗑️ Supprimer mon compte</button>
-                        </div>
-                    </div>
-                </div>
-
-            </div> </div> </main>
-</body>
-</html>
+                            <button class="btn btn-danger">🗑️ Supprimer</button>

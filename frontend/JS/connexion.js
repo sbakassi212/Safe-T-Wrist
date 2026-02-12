@@ -51,21 +51,15 @@ async function login() {
   const message = document.getElementById("message");
 
 try {
-    // 1. On récupère la valeur de l'email (password et username sont déjà récupérés plus haut)
     const email = document.getElementById("email").value; 
-
-    // 2. On attend la réponse du serveur (on envoie tout d'un coup)
     const result = await postData("/login", { username, email, password }); 
-    
     // 3. Si ça marche, on affiche un message de succès avant de partir
     message.style.color = "lightgreen";
     message.textContent = result.message || "Connexion réussie";
-    
     // 4. Redirection vers le tableau de bord
     setTimeout(() => {
       window.location.href = "../html/dashboard.html";
     }, 800);
-
   } catch (error) {
     // Si une erreur survient (identifiants faux ou serveur éteint)
     message.style.color = "#ff4b5c";

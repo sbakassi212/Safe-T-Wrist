@@ -78,8 +78,8 @@ form a {
     margin-top: 25px;
 }
 
-/* Bouton d'inscription */
-button[type="submit"] {
+/* Bouton d'inscription (Sélecteur simplifié) */
+button {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     padding: 14px;
@@ -90,15 +90,25 @@ button[type="submit"] {
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     width: 100%;
+    margin-top: 15px; /* Ajoute de l'espace pour ne pas coller au message d'erreur */
 }
 
-button[type="submit"]:hover {
+button:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
 }
 
-button[type="submit"]:active {
+button:active {
     transform: translateY(0);
+}
+
+/* Style pour le message d'erreur (Failed to fetch) */
+#message {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 10px;
+    font-weight: 500;
+    min-height: 20px; /* Évite que le bouton ne bouge quand le texte apparaît */
 }
 
 /* Texte de redirection en bas */
@@ -132,4 +142,11 @@ button[type="submit"]:active {
     .login-container h2 {
         font-size: 24px;
     }
+}
+#message {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 15px;
+    min-height: 20px; /* Évite que le bouton ne saute quand le texte apparaît */
+    font-weight: 500;
 }

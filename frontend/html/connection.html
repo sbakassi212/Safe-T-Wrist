@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion</title>
     <link rel="stylesheet" href="../css/connection.css">
-    <script src="../JS/connexion.js"></script>
 </head>
 <body>
     <div class="login-container">
         <h2>Connexion</h2>
-        <form action="#" method="POST"> 
+       <form id="authForm">
             <label for="nom d'utilisateur">Nom d'utilisateur</label> 
             <input type="text" id="username" name="username" required>
             
@@ -22,10 +21,11 @@
 
           <p id="message"></p> 
 
-       <button type="button" class="btn-connexion" onclick="login()">Se connecter</button>
+     <button type="button" class="btn-connexion" onclick="login(event)">Se connecter</button>
         </form>
         <p class="register-link">Pas encore de compte ? <a href="../html/inscription.html">Inscrivez-vous</a></p>
     </div>
+    <script src="../JS/connexion.js"></script>
 </body>
 </html>
     

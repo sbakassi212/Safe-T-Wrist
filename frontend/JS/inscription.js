@@ -45,8 +45,8 @@ async function getData(endpoint) {
   }
 }
 
-async function login(event) { 
-  if (event) event.preventDefault(); 
+async function login(event) {
+  if (event) event.preventDefault();
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
   const message = document.getElementById("message");
@@ -54,10 +54,10 @@ async function login(event) {
 try {
     const email = document.getElementById("email").value; 
     const result = await postData("/login", { username, email, password }); 
-    //  Si ça marche, on affiche un message de succès avant de partir
+    // 3. Si ça marche, on affiche un message de succès avant de partir
     message.style.color = "lightgreen";
     message.textContent = result.message || "Connexion réussie";
-    // Redirection vers le tableau de bord
+    // 4. Redirection vers le tableau de bord
     setTimeout(() => {
       window.location.href = "../html/dashboard.html";
     }, 800);
@@ -68,9 +68,8 @@ try {
   }
 }
 
-async function register(event) { 
-  if (event) event.preventDefault(); 
-  
+async function register(event) {
+  if (event) event.preventDefault();
   const nom = document.getElementById("nom").value;
   const prenom = document.getElementById("prenom").value;
   const email = document.getElementById("email").value;
@@ -78,24 +77,21 @@ async function register(event) {
   const confirmPassword = document.getElementById("confirmPassword").value;
   const message = document.getElementById("message");
 
-  // Vérification que les mots de passe sont identiques
+  // On vérifie si les deux mots de passe sont identiques avant d'envoyer
   if (password !== confirmPassword) {
     message.style.color = "#ff4b5c";
     message.textContent = "Les mots de passe ne correspondent pas.";
-    return; 
+    return;
   }
 
   try {
-    // Envoi des données au serveur (nom, prenom, email, password)
-    const result = await postData("/register", { nom, prenom, email, password });
-    
+   const result = await postData("/register", { nom, prenom, email, password });
     message.style.color = "lightgreen";
-    message.textContent = result.message || "Inscription réussie !";
-
-    // Redirection vers la page de connexion après 2 secondes
-    setTimeout(() => {
-      window.location.href = "../html/connection.html"; 
-    }, 2000);
+    message.textContent = result.message || "Inscription réussie";
+    // Redirection automatique après 2 secondes
+setTimeout(() => {
+  window.location.href = "connexion.html"; 
+}, 2000);
 
   } catch (error) {
     message.style.color = "#ff4b5c";

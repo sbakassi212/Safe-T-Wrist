@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription</title>
-    <link rel="stylesheet" href="../css/inscription.css"> </head>
+    <link rel="stylesheet" href="../css/inscription.css">
+ </head>
 <body>
     <div class="login-container">
         <h2>Créer un compte</h2>
-        <form action="#" method="POST">
-        <label for="name">Nom</label>
-        <input type="text" id="name" name="name" placeholder="Votre nom" required>
+        <form id="authForm">
+        <label for="nom">Nom</label>
+        <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
 
-        <label for="surname">Prénom</label>
-        <input type="text" id="surname" name="surname" placeholder="Votre prénom" required>
+        <label for="prenom">Prénom</label>
+        <input type="text" id="prenom" name="prenom" placeholder="Votre prénom" required>
 
 
             <label for="email">Email</label>
@@ -22,14 +23,15 @@
             <label for="password">Mot de passe</label>
             <input type="password" id="password" name="password" placeholder="********" required>
 
-            <label for="confirm-password">Confirmer le mot de passe</label>
-            <input type="password" id="confirm-password" name="confirm-password" placeholder="********" required>
+            <label for="confirmPassword">Confirmer le mot de passe</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="********" required>
 
-           <a href="../html/connection.html">
-  <button type="submit">S'inscrire</button>
-</a>
+     <p id="message"></p>
+    <button type="button" onclick="register(event)">S'inscrire</button>
+
         </form>
         <p class="register-link">Déjà un compte ? <a href="../html/connection.html">Connectez-vous</a></p>
     </div>
+      <script src="../JS/inscription.js"></script>
 </body>
 </html>

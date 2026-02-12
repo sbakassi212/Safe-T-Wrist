@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion</title>
     <link rel="stylesheet" href="../css/connection.css">
-    <script src="script.js"></script>
+    <script src="../JS/connexion.js"></script>
 </head>
 <body>
     <div class="login-container">
@@ -20,9 +20,9 @@
             <label for="password">Mot de passe</label>
             <input type="password" id="password" name="password" required>
 
-            <a href="../html/acceuil.html"> 
-  <button type="submit">se connecter</button>
-</a>
+          <p id="message"></p> 
+
+       <button type="button" class="btn-connexion" onclick="login()">Se connecter</button>
         </form>
         <p class="register-link">Pas encore de compte ? <a href="../html/inscription.html">Inscrivez-vous</a></p>
     </div>

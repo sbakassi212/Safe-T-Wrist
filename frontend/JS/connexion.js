@@ -50,17 +50,18 @@ async function login() {
   const password = document.getElementById("password").value;
   const message = document.getElementById("message");
 
-  try {
-    const result = await postData("/login", { username, password });
+try {
+    const email = document.getElementById("email").value; 
+    const result = await postData("/login", { username, email, password }); 
+    // 3. Si ça marche, on affiche un message de succès avant de partir
     message.style.color = "lightgreen";
     message.textContent = result.message || "Connexion réussie";
-    
-    // Redirection vers la page d'accueil (tableau de bord) 
+    // 4. Redirection vers le tableau de bord
     setTimeout(() => {
       window.location.href = "../html/dashboard.html";
     }, 800);
-
   } catch (error) {
+    // Si une erreur survient (identifiants faux ou serveur éteint)
     message.style.color = "#ff4b5c";
     message.textContent = error.message;
   }

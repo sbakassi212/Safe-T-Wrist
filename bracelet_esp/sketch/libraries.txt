@@ -3,7 +3,6 @@
 
 # Automatically added based on includes:
 Adafruit GFX Library
-
 Adafruit SSD1306
 Adafruit MPU6050
 Adafruit BusIO

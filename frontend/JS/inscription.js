@@ -53,7 +53,7 @@ async function login(event) {
 
 try {
     const email = document.getElementById("email").value; 
-    const result = await postData("/login", { username, email, password }); 
+   const result = await postData("/auth/login", { email, password });
     // 3. Si ça marche, on affiche un message de succès avant de partir
     message.style.color = "lightgreen";
     message.textContent = result.message || "Connexion réussie";
@@ -85,12 +85,16 @@ async function register(event) {
   }
 
   try {
-   const result = await postData("/register", { nom, prenom, email, password });
+const result = await postData("/auth/register", { 
+    email, 
+    password, 
+    nom: `${prenom} ${nom}` 
+});
     message.style.color = "lightgreen";
     message.textContent = result.message || "Inscription réussie";
     // Redirection automatique après 2 secondes
 setTimeout(() => {
-  window.location.href = "connexion.html"; 
+window.location.href = "../html/connection.html";
 }, 2000);
 
   } catch (error) {

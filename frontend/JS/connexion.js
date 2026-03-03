@@ -1,5 +1,5 @@
-// URL de l'API backend
-const API_BASE_URL = "http://localhost:3000/api";
+// C'est l'adresse de ton serveur Node.js (le backend)
+const API_BASE_URL = "http://172.29.18.254:3000/api";
 
 /**
  * Requête POST générique
@@ -16,8 +16,9 @@ async function postData(endpoint, data) {
 
     const result = await response.json();
 
-    if (!response.ok || result.success === false) {
-      throw new Error(result.message || `Erreur HTTP ${response.status}`);
+   if (!response.ok) {
+        // On récupère l'erreur renvoyée par le serveur (ex: "Email incorrect")
+        throw new Error(result.error || result.message || `Erreur HTTP ${response.status}`);
     }
 
     return result;
@@ -47,27 +48,56 @@ async function getData(endpoint) {
 
 async function login(event) { 
   if (event) event.preventDefault(); 
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
+  
   const message = document.getElementById("message");
+  
+  // 1. On récupère les éléments HTML (sans .value au début pour tester s'ils existent)
+  const emailEl = document.getElementById("email");
+  const passwordEl = document.getElementById("password");
 
-try {
-    const email = document.getElementById("email").value; 
-    const result = await postData("/login", { username, email, password }); 
-    //  Si ça marche, on affiche un message de succès avant de partir
+  // 2. Sécurité : si le script ne trouve pas "email" ou "password", il s'arrête ici
+  if (!emailEl || !passwordEl) {
+    console.error("ERREUR : L'ID 'email' ou 'password' n'existe pas dans votre HTML.");
+    if(message) message.textContent = "Erreur : champs HTML introuvables.";
+    return;
+  }
+
+  try {
+    message.style.color = "orange";
+    message.textContent = "Connexion en cours...";
+
+    // 3. Appel au backend avec les valeurs récupérées
+    const result = await postData("/auth/login", { 
+      email: emailEl.value, 
+      password: passwordEl.value 
+    }); 
+
+    // 4. SAUVEGARDE dans le navigateur
+    localStorage.setItem('token', result.token);
+    if (result.user) {
+        localStorage.setItem('id_bracelet', result.user.id_bracelet);
+        localStorage.setItem('user_nom', result.user.nom);
+    }
+
     message.style.color = "lightgreen";
-    message.textContent = result.message || "Connexion réussie";
-    // Redirection vers le tableau de bord
+    message.textContent = "Connexion réussie !";
+
+    // 5. Redirection
     setTimeout(() => {
-      window.location.href = "../html/dashboard.html";
+      // Note : On simplifie le chemin pour tester
+      window.location.href = "dashboard.html"; 
     }, 800);
+
   } catch (error) {
-    // Si une erreur survient (identifiants faux ou serveur éteint)
+    console.error("Détail erreur connexion:", error);
     message.style.color = "#ff4b5c";
     message.textContent = error.message;
   }
 }
 
+/**
+ * Fonction d'INSCRIPTION (Register)
+ */
 async function register(event) { 
   if (event) event.preventDefault(); 
   
@@ -78,7 +108,7 @@ async function register(event) {
   const confirmPassword = document.getElementById("confirmPassword").value;
   const message = document.getElementById("message");
 
-  // Vérification que les mots de passe sont identiques
+  // Vérification des mots de passe
   if (password !== confirmPassword) {
     message.style.color = "#ff4b5c";
     message.textContent = "Les mots de passe ne correspondent pas.";
@@ -86,8 +116,12 @@ async function register(event) {
   }
 
   try {
-    // Envoi des données au serveur (nom, prenom, email, password)
-    const result = await postData("/register", { nom, prenom, email, password });
+    // Appel au backend sur la route /auth/register
+    const result = await postData("/auth/register", { 
+        email, 
+        password, 
+        nom: `${prenom} ${nom}` 
+    });
     
     message.style.color = "lightgreen";
     message.textContent = result.message || "Inscription réussie !";

@@ -1,5 +1,5 @@
-// URL de l'API backend
-const API_BASE_URL = "http://localhost:3000/api";
+// C'est l'adresse de ton serveur Node.js (le backend)
+const API_BASE_URL = "http://172.29.18.254:3000/api";
 
 /**
  * Requête POST générique
@@ -16,14 +16,16 @@ async function postData(endpoint, data) {
 
     const result = await response.json();
 
-    if (!response.ok || result.success === false) {
-      throw new Error(result.message || `Erreur HTTP ${response.status}`);
+  if (!response.ok) {
+      // On récupère le message d'erreur du serveur s'il existe (ex: "Email déjà utilisé")
+      throw new Error(result.error || result.message || `Erreur HTTP ${response.status}`);
     }
 
     return result;
   } catch (error) {
-    console.error("Erreur POST:", error);
-    throw error;
+    console.error("Détail de l'erreur réseau:", error);
+    // Ce message s'affichera si le serveur est éteint ou l'IP injoignable
+    throw new Error("Serveur injoignable (Vérifiez la VM et le port 3000)");
   }
 }
 
@@ -53,16 +55,23 @@ async function login(event) {
 
 try {
     const email = document.getElementById("email").value; 
-   const result = await postData("/auth/login", { email, password });
-    // 3. Si ça marche, on affiche un message de succès avant de partir
+    const result = await postData("/auth/login", { email, password });
+
+    // Stockage des informations pour le dashboard
+    localStorage.setItem('token', result.token);
+    localStorage.setItem('id_bracelet', result.user.id_bracelet);
+
+    // Affichage du succès
     message.style.color = "lightgreen";
     message.textContent = result.message || "Connexion réussie";
-    // 4. Redirection vers le tableau de bord
+
+    // Redirection vers le tableau de bord après un court délai
     setTimeout(() => {
       window.location.href = "../html/dashboard.html";
     }, 800);
+
   } catch (error) {
-    // Si une erreur survient (identifiants faux ou serveur éteint)
+    // Gestion de l'erreur (si le serveur répond 401 ou est éteint)
     message.style.color = "#ff4b5c";
     message.textContent = error.message;
   }

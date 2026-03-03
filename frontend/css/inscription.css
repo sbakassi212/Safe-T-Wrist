@@ -102,15 +102,6 @@ button:active {
     transform: translateY(0);
 }
 
-/* Style pour le message d'erreur (Failed to fetch) */
-#message {
-    text-align: center;
-    font-size: 14px;
-    margin-top: 10px;
-    font-weight: 500;
-    min-height: 20px; /* Évite que le bouton ne bouge quand le texte apparaît */
-}
-
 /* Texte de redirection en bas */
 .register-link {
     text-align: center;

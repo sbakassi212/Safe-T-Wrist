@@ -1,5 +1,5 @@
 // C'est l'adresse de ton serveur Node.js (le backend)
-const API_BASE_URL = "http://172.29.18.254:3000/api";
+const API_BASE_URL = "http://172.29.19.44:3000/api";
 
 /**
  * Requête POST générique

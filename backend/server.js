@@ -183,3 +183,10 @@ const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Serveur démarré sur le port ${PORT}`);
 });
+
+// mettre le back en privé 
+const path = require('path');
+
+// On ne rend "public" QUE le dossier Front
+app.use(express.static(path.join(__dirname, '../Front'))); //comme le back nest pas dedans il nest pas public, mais le front oui (pour que les utilisateurs puissent y accéder)
+

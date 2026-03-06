@@ -11,7 +11,7 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <span class="logo-icon">❤️</span>
-            <span class="logo-text">MediWatch</span>
+            <span class="logo-text">Safe-t-wrist</span>
         </div>
         <nav class="sidebar-nav">
             <a href="dashboard.html" class="nav-item">
@@ -30,7 +30,7 @@
                 <span class="nav-icon">📋</span>
                 <span>Historique</span>
             </a>
-            <a href="donnees-sante.html" class="nav-item">
+            <a href="sante.html" class="nav-item">
                 <span class="nav-icon">💓</span>
                 <span>Données de santé</span>
             </a>
@@ -90,81 +90,9 @@
 
             <div class="contacts-grid">
                 
-                <div class="contact-card priority-1">
-                    <form>
-                        <div class="contact-header">
-                            <div class="contact-avatar">MR</div>
-                            <div class="contact-info">
-                                <input type="text" value="Marie Rousseau" style="font-weight: bold; border: none; background: transparent; font-size: 1.125rem; width: 100%;">
-                                <select style="border: none; background: transparent; color: var(--gray); font-size: 0.85rem;">
-                                    <option selected>Fille</option>
-                                    <option>Fils</option>
-                                    <option>Conjoint</option>
-                                </select>
-                            </div>
-                            <div class="priority-badge priority-1">P1</div>
-                        </div>
+               
 
-                        <div class="contact-details">
-                            <div class="form-group" style="margin-bottom: 0.5rem;">
-                                <label style="font-size: 0.75rem;">Téléphone</label>
-                                <input type="tel" value="+33 6 12 34 56 78">
-                            </div>
-                            <div class="form-group" style="margin-bottom: 0.5rem;">
-                                <label style="font-size: 0.75rem;">Email</label>
-                                <input type="email" value="marie.rousseau@email.fr">
-                            </div>
-                        </div>
-
-                        <div class="contact-notifications">
-                            <label class="notif-badge active"><input type="checkbox" checked> SMS</label>
-                            <label class="notif-badge active"><input type="checkbox" checked> Email</label>
-                        </div>
-
-                        <div class="contact-actions">
-                            <button type="submit" class="btn-icon" title="Sauvegarder" style="color: var(--success);">💾</button>
-                            <button type="button" class="btn-icon danger" title="Supprimer">🗑️</button>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="contact-card priority-2">
-                    <form>
-                        <div class="contact-header">
-                            <div class="contact-avatar">PD</div>
-                            <div class="contact-info">
-                                <input type="text" value="Pierre Dubois" style="font-weight: bold; border: none; background: transparent; font-size: 1.125rem; width: 100%;">
-                                <select style="border: none; background: transparent; color: var(--gray); font-size: 0.85rem;">
-                                    <option selected>Médecin traitant</option>
-                                    <option>Ami</option>
-                                    <option>Aidant</option>
-                                </select>
-                            </div>
-                            <div class="priority-badge priority-2">P2</div>
-                        </div>
-
-                        <div class="contact-details">
-                            <div class="form-group" style="margin-bottom: 0.5rem;">
-                                <label style="font-size: 0.75rem;">Téléphone</label>
-                                <input type="tel" value="+33 6 98 76 54 32">
-                            </div>
-                            <div class="form-group" style="margin-bottom: 0.5rem;">
-                                <label style="font-size: 0.75rem;">Email</label>
-                                <input type="email" value="dr.dubois@cabinet.fr">
-                            </div>
-                        </div>
-
-                        <div class="contact-notifications">
-                            <label class="notif-badge"><input type="checkbox"> SMS</label>
-                            <label class="notif-badge active"><input type="checkbox" checked> Email</label>
-                        </div>
-
-                        <div class="contact-actions">
-                            <button type="submit" class="btn-icon" title="Sauvegarder" style="color: var(--success);">💾</button>
-                            <button type="button" class="btn-icon danger" title="Supprimer">🗑️</button>
-                        </div>
-                    </form>
-                </div>
+             
 
             </div>
 
@@ -178,11 +106,6 @@
         </div>
     </main>
 
-    <script>
-        function toggleAddForm() {
-            const form = document.getElementById('addContactForm');
-            form.style.display = form.style.display === 'none' ? 'block' : 'none';
-        }
-    </script>
+    <script src="../JS/contact.js"></script>
 </body>
 </html>

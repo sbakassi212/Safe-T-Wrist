@@ -21,10 +21,10 @@ async function login(event) {
         const data = await response.json();
 
         if (data.success) {
-            // STOCKAGE DES INFOS : Très important pour le quiz et le classement
+         
             localStorage.setItem('user_nom', data.nom);
             localStorage.setItem('user_prenom', data.prenom);
-            localStorage.setItem('user_email', email); // Nécessaire pour la route /api/score
+            localStorage.setItem('user_email', email); 
             
             window.location.href = "acceuil.html";
         } else {

@@ -1,18 +1,18 @@
-const API_BASE_URL = "http://172.29.18.99:3000/api";
+const API_URL = "http://172.29.18.254:3000"; 
 
 async function login(event) {
     if (event) event.preventDefault();
 
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
-    const messageElem = document.getElementById('message');
+
+    if (!email || !password) {
+        alert("Merci de remplir tous les champs !");
+        return;
+    }
 
     try {
-        messageElem.style.color = "orange";
-        messageElem.innerText = "Vérification...";
-
-        // Appel API (Route : /auth/login)
-        const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        const response = await fetch(`${API_URL}/api/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
@@ -20,27 +20,18 @@ async function login(event) {
 
         const data = await response.json();
 
-        if (response.ok) {
-            // SAUVEGARDE DANS LOCALSTORAGE
-            localStorage.setItem('token', data.token);              // Le jeton de sécurité
-            localStorage.setItem('user_nom', data.user.nom);        // Nom affiché sur l'accueil
-            localStorage.setItem('user_role', data.user.role);      // Son rôle
-            localStorage.setItem('id_bracelet', data.user.id_bracelet || "");
-
-            messageElem.style.color = "lightgreen";
-            messageElem.innerText = "Connexion réussie !";
-
-            setTimeout(() => {
-                window.location.href = "dashboard.html";
-            }, 1000);
+        if (data.success) {
+            // STOCKAGE DES INFOS : Très important pour le quiz et le classement
+            localStorage.setItem('user_nom', data.nom);
+            localStorage.setItem('user_prenom', data.prenom);
+            localStorage.setItem('user_email', email); // Nécessaire pour la route /api/score
+            
+            window.location.href = "acceuil.html";
         } else {
-            // Affichage de l'erreur envoyée par le serveur (ex: "Email ou mot de passe incorrect")
-            messageElem.style.color = "red";
-            messageElem.innerText = data.error;
+            alert("Erreur : " + data.message);
         }
     } catch (error) {
         console.error("Erreur:", error);
-        messageElem.style.color = "red";
-        messageElem.innerText = "Serveur injoignable.";
+        alert("Le serveur ne répond pas. Vérifie qu'il est lancé sur le port 3000.");
     }
 }

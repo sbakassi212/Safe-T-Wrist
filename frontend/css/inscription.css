@@ -1,143 +1,129 @@
-/* Réinitialisation de base */
+/* Variables de couleurs pour faciliter la personnalisation */
+:root {
+    --primary-color: #4a90e2; /* Bleu technologique */
+    --secondary-color: #2c3e50;
+    --accent-color: #00d2ff;
+    --background-gradient: linear-gradient(135deg, #1a1c2c 0%, #4a192c 100%);
+    --white: #ffffff;
+    --error-color: #ff4757;
+}
+
+/* Reset de base */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
+    background: var(--background-gradient);
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    color: var(--white);
 }
 
 /* Conteneur principal */
 .login-container {
-    background: white;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px); /* Effet flou moderne */
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     width: 100%;
-    max-width: 450px; /* Légèrement plus large pour accommoder le formulaire d'inscription */
+    max-width: 400px;
+    margin: 20px;
 }
 
-.login-container h2 {
-    color: #333;
+h2 {
     text-align: center;
-    margin-bottom: 30px;
-    font-size: 28px;
-    font-weight: 600;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    letter-spacing: 1px;
 }
 
+/* Formulaire */
 form {
     display: flex;
     flex-direction: column;
 }
 
 label {
-    color: #555;
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 6px;
-    margin-top: 15px;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    opacity: 0.9;
 }
 
-/* Supprime la marge au-dessus du premier label */
-label[for="name"] {
-    margin-top: 0;
-}
-
-/* Champs de saisie */
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-    padding: 12px 15px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 15px;
-    transition: all 0.3s ease;
-    outline: none;
-    width: 100%;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-/* Style du lien qui entoure le bouton */
-form a {
-    text-decoration: none;
-    display: block;
-    margin-top: 25px;
-}
-
-/* Bouton d'inscription (Sélecteur simplifié) */
-button {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 14px;
+input {
+    padding: 12px;
+    margin-bottom: 15px;
     border: none;
     border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus {
+    box-shadow: 0 0 8px var(--accent-color);
+    background: #ffffff;
+}
+
+/* Bouton */
+button {
+    background: var(--primary-color);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    width: 100%;
-    margin-top: 15px; /* Ajoute de l'espace pour ne pas coller au message d'erreur */
+    transition: transform 0.2s, background 0.3s;
+    margin-top: 10px;
 }
 
 button:hover {
+    background: var(--accent-color);
     transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
 }
 
 button:active {
     transform: translateY(0);
 }
 
-/* Texte de redirection en bas */
+/* Messages et liens */
+#message {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    min-height: 1.2rem;
+}
+
 .register-link {
     text-align: center;
-    margin-top: 25px;
-    color: #666;
-    font-size: 14px;
+    margin-top: 20px;
+    font-size: 0.85rem;
 }
 
 .register-link a {
-    color: #667eea;
-    font-weight: 600;
-    display: inline;
-    margin: 0;
+    color: var(--accent-color);
     text-decoration: none;
-    transition: color 0.3s ease;
+    font-weight: bold;
 }
 
 .register-link a:hover {
-    color: #764ba2;
     text-decoration: underline;
 }
 
-/* Adaptabilité Mobile */
+/* Responsive */
 @media (max-width: 480px) {
     .login-container {
-        padding: 30px 20px;
+        padding: 1.5rem;
     }
-    
-    .login-container h2 {
-        font-size: 24px;
-    }
-}
-#message {
-    text-align: center;
-    font-size: 14px;
-    margin-top: 15px;
-    min-height: 20px; /* Évite que le bouton ne saute quand le texte apparaît */
-    font-weight: 500;
 }

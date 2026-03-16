@@ -37,8 +37,8 @@ async function linkBracelet() {
     }
 
     try {
-        // Optionnel : Appel à ton API de liaison si prête
-        // await fetch('http://172.29.19.44:3000/api/auth/link-bracelet', { ... });
+       
+
 
         localStorage.setItem('id_bracelet', newId);
         message.style.color = "#2ecc71";

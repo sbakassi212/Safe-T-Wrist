@@ -1,34 +1,50 @@
+/* Réutilisation des variables pour la cohérence de la marque Safe-T-Wrist */
+:root {
+    --primary-color: #4a90e2; 
+    --secondary-color: #2c3e50;
+    --accent-color: #00d2ff;
+    --background-gradient: linear-gradient(135deg, #1a1c2c 0%, #4a192c 100%);
+    --white: #ffffff;
+    --success-glow: 0 0 15px rgba(0, 210, 255, 0.6);
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
+    background: var(--background-gradient);
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    color: var(--white);
+    overflow: hidden;
 }
 
 .login-container {
-    background: white;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 420px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 90%;
+    max-width: 400px;
 }
 
-.login-container h2 {
-    color: #333;
+h2 {
     text-align: center;
-    margin-bottom: 30px;
-    font-size: 28px;
-    font-weight: 600;
+    margin-bottom: 2rem;
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(to right, #fff, var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 form {
@@ -37,91 +53,70 @@ form {
 }
 
 label {
-    color: #555;
-    font-size: 14px;
-    font-weight: 500;
     margin-bottom: 8px;
-    margin-top: 15px;
+    font-weight: 500;
+    font-size: 0.9rem;
 }
 
-label:first-of-type {
-    margin-top: 0;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-    padding: 12px 15px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 15px;
-    transition: all 0.3s ease;
-    outline: none;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-a {
-    text-decoration: none;
-    display: block;
-    margin-top: 20px;
-}
-
-.btn-connexion {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+input {
     padding: 14px;
+    margin-bottom: 20px;
     border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    transform: scale(1.02);
+    box-shadow: var(--success-glow);
+}
+
+/* Bouton spécifique "Stade" */
+.btn-connexion {
+    background: var(--primary-color);
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    width: 100%;
-    margin-top: 25px; 
+    text-transform: uppercase;
+    transition: all 0.4s ease;
+    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .btn-connexion:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    background: var(--accent-color);
+    letter-spacing: 1px;
+    box-shadow: var(--success-glow);
 }
 
-.btn-connexion:active {
-    transform: translateY(0);
+#message {
+    text-align: center;
+    min-height: 20px;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+    color: #ffda79; /* Jaune orangé pour les alertes */
 }
 
 .register-link {
     text-align: center;
     margin-top: 25px;
-    color: #666;
-    font-size: 14px;
+    font-size: 0.9rem;
+    opacity: 0.8;
 }
 
 .register-link a {
-    color: #667eea;
-    font-weight: 600;
-    display: inline;
-    margin: 0;
-    transition: color 0.3s ease;
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: bold;
 }
 
 .register-link a:hover {
-    color: #764ba2;
     text-decoration: underline;
 }
-
-/* Responsive */
-@media (max-width: 480px) {
-    .login-container {
-        padding: 30px 25px;
-    }
-    
-    .login-container h2 {
-        font-size: 24px;
-    }
-}   

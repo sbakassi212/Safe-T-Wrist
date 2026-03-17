@@ -26,12 +26,12 @@ async function login(event) {
             localStorage.setItem('user_prenom', data.prenom);
             localStorage.setItem('user_email', email); 
             
-            window.location.href = "acceuil.html";
+            window.location.href = "dashboard.html";
         } else {
             alert("Erreur : " + data.message);
         }
     } catch (error) {
         console.error("Erreur:", error);
-        alert("Le serveur ne répond pas. Vérifie qu'il est lancé sur le port 3000.");
+        alert("Le serveur ne répond pas. Vérifie qu'il est lancé sur la VM projet.");
     }
 }

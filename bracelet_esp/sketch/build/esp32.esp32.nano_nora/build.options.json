@@ -1,0 +1,10 @@
+{
+  "additionalFiles": "..\\..",
+  "builtInLibrariesFolders": "C:\\Users\\frayderick\\AppData\\Local\\Arduino15\\libraries",
+  "compiler.optimization_flags": "-Os",
+  "customBuildProperties": "",
+  "fqbn": "esp32:esp32:nano_nora:USBMode=default,PartitionScheme=default,DebugLevel=none,PinNumbers=default",
+  "hardwareFolders": "C:\\Users\\frayderick\\AppData\\Local\\Arduino15\\packages",
+  "otherLibrariesFolders": "C:\\Users\\frayderick\\Documents\\Arduino\\libraries",
+  "sketchLocation": "C:\\Users\\frayderick\\Desktop\\Travail\\TP\\TP FINAL\\bracelet_esp\\bracelet_esp\\sketch"
+}

@@ -1,0 +1,10 @@
+{
+  "additionalFiles": "..\\..",
+  "builtInLibrariesFolders": "C:\\Users\\frayderick\\AppData\\Local\\Arduino15\\libraries",
+  "compiler.optimization_flags": "-Os",
+  "customBuildProperties": "",
+  "fqbn": "esp32:esp32:adafruit_qtpy_esp32c3:UploadSpeed=921600,CDCOnBoot=cdc,CPUFreq=160,FlashFreq=80,FlashMode=qio,FlashSize=4M,PartitionScheme=default,DebugLevel=none,EraseFlash=none,ZigbeeMode=default",
+  "hardwareFolders": "C:\\Users\\frayderick\\AppData\\Local\\Arduino15\\packages",
+  "otherLibrariesFolders": "C:\\Users\\frayderick\\Documents\\Arduino\\libraries",
+  "sketchLocation": "C:\\Users\\frayderick\\Desktop\\Travail\\TP\\TP FINAL\\bracelet_esp\\bracelet_esp\\sketch"
+}

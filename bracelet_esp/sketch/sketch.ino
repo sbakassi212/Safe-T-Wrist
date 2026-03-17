@@ -74,7 +74,7 @@ void envoyerDonnees(int b, bool s) {
     HTTPClient http;
     
     // 1. La nouvelle route précise
-    http.begin("http://172.29.18.253:3000/api/measures"); 
+    http.begin("http://172.29.18.99:3000/api/measures"); 
     http.addHeader("Content-Type", "application/json");
 
     // 2. Le JSON avec les noms exacts : id_bracelet, bpm, batterie

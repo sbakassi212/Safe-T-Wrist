@@ -1,0 +1,144 @@
+/* --- VARIABLES GLOBALES (Safe-T-Wrist) --- */
+:root {
+    --primary-color: #4a90e2; 
+    --secondary-color: #2c3e50;
+    --accent-color: #00d2ff;
+    --background-gradient: linear-gradient(135deg, #1a1c2c 0%, #4a192c 100%);
+    --white: #ffffff;
+    --success-glow: 0 0 15px rgba(0, 210, 255, 0.6);
+    --error-color: #ff4757;
+}
+
+/* --- RESET & BASE --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+/* En React, on cible souvent html et body pour le fond */
+html, body, #root {
+    background: var(--background-gradient);
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--white);
+    margin: 0;
+}
+
+/* --- CONTENEUR PRINCIPAL (Commun aux deux pages) --- */
+.login-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 90%;
+    max-width: 400px;
+    margin: 20px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(to right, #fff, var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+input {
+    padding: 14px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    transform: scale(1.02);
+    box-shadow: var(--success-glow);
+    background: #ffffff;
+}
+
+/* --- BOUTONS --- */
+.btn-connexion, button {
+    background: var(--primary-color);
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.4s ease;
+    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-connexion:hover, button:hover {
+    background: var(--accent-color);
+    letter-spacing: 1px;
+    box-shadow: var(--success-glow);
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* --- MESSAGES & LIENS --- */
+#message {
+    text-align: center;
+    min-height: 20px;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.register-link a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 1.5rem;
+    }
+}

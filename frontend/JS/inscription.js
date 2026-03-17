@@ -27,7 +27,7 @@ async function register(event) {
 
         if (data.success) {
             messageElem.style.color = "#28a745"; // Vert
-            messageElem.innerText = "Inscription réussie ! Redirection vers le stade...";
+            messageElem.innerText = "Inscription réussie ! Redirection vers la page de connexion...";
             
             setTimeout(() => {
                 window.location.href = "connexion.html";

@@ -13,13 +13,12 @@ function Register() {
   const [message, setMessage] = useState({ text: '', color: '' });
   const navigate = useNavigate();
 
-  // Ton IP de VM
   const API_URL = "http://172.29.18.254:3000"; 
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    // 2. Vérification des mots de passe (comme dans ton ancien JS)
+    // 2. Vérification des mots de passe 
     if (formData.password !== formData.confirmPassword) {
       setMessage({ text: "Les mots de passe ne correspondent pas !", color: "red" });
       return;
@@ -42,7 +41,7 @@ function Register() {
       if (response.ok) {
         setMessage({ text: "Inscription réussie ! Redirection...", color: "#28a745" });
         
-        // Redirection après 2 secondes (comme dans ton setTimeout)
+        // Redirection après 2 secondes 
         setTimeout(() => {
           navigate('/login');
         }, 2000);

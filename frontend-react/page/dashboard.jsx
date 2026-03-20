@@ -7,7 +7,6 @@ function Dashboard() {
   const [measures, setMeasures] = useState({ bpm: '--', batterie: '--' });
   const navigate = useNavigate();
 
-  // REMPLACE PAR L'IP DE TA VM
   const API_URL = "http://172.29.18.254:3000";
 
   useEffect(() => {

@@ -1,50 +1,53 @@
-/* Réutilisation des variables pour la cohérence de la marque Safe-T-Wrist */
-:root {
-    --primary-color: #4a90e2; 
-    --secondary-color: #2c3e50;
-    --accent-color: #00d2ff;
-    --background-gradient: linear-gradient(135deg, #1a1c2c 0%, #4a192c 100%);
-    --white: #ffffff;
-    --success-glow: 0 0 15px rgba(0, 210, 255, 0.6);
-}
+/* Importation d'une police propre et lisible (type hospitalier moderne) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Roboto, sans-serif;
+:root {
+    --med-bg: #f0f4f8;          /* Fond gris-bleu très clair (propre) */
+    --med-primary: #0056b3;     /* Bleu médical profond */
+    --med-secondary: #e1effe;   /* Bleu très clair pour les champs */
+    --med-accent: #10b981;      /* Vert "santé" pour le bouton */
+    --med-text: #1e293b;        /* Texte gris foncé pour la lisibilité */
+    --med-border: #cbd5e1;      /* Bordures douces */
 }
 
 body {
-    background: var(--background-gradient);
-    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--med-bg);
+    /* Motif subtil en arrière-plan (optionnel) */
+    background-image: radial-gradient(#cbd5e1 0.5px, transparent 0.5px);
+    background-size: 20px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--white);
-    overflow: hidden;
+    height: 100vh;
+    margin: 0;
 }
 
 .login-container {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(12px);
-    padding: 2.5rem;
+    background-color: #ffffff;
+    padding: 3rem;
     border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    width: 90%;
-    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0, 86, 179, 0.1); /* Ombre bleutée */
+    width: 100%;
+    max-width: 420px;
+    border-top: 6px solid var(--med-primary); /* Barre de rappel médicale en haut */
 }
 
 h2 {
     text-align: center;
     margin-bottom: 2rem;
-    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--med-primary);
     text-transform: uppercase;
-    letter-spacing: 2px;
-    background: linear-gradient(to right, #fff, var(--accent-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    letter-spacing: 1px;
+    font-size: 1.5rem;
+}
+
+/* Petit ajout visuel pour le titre si tu veux ajouter une icône plus tard */
+h2::before {
+    content: "✚ ";
+    color: #ef4444; /* Rouge médical discret */
+    margin-right: 8px;
 }
 
 form {
@@ -53,70 +56,78 @@ form {
 }
 
 label {
-    margin-bottom: 8px;
-    font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    color: #64748b;
 }
 
 input {
-    padding: 14px;
-    margin-bottom: 20px;
-    border: none;
+    padding: 0.85rem 1rem;
+    margin-bottom: 1.5rem;
+    background-color: var(--med-secondary);
+    border: 2px solid transparent;
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.9);
     font-size: 1rem;
+    color: var(--med-text);
     transition: all 0.3s ease;
+}
+
+input::placeholder {
+    color: #94a3b8;
 }
 
 input:focus {
     outline: none;
-    transform: scale(1.02);
-    box-shadow: var(--success-glow);
+    background-color: #ffffff;
+    border-color: var(--med-primary);
+    box-shadow: 0 0 0 4px rgba(0, 86, 179, 0.1);
 }
 
-/* Bouton spécifique "Stade" */
 .btn-connexion {
-    background: var(--primary-color);
+    background-color: var(--med-primary);
     color: white;
-    padding: 15px;
+    padding: 1rem;
     border: none;
     border-radius: 10px;
-    font-size: 1.1rem;
-    font-weight: bold;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
-    text-transform: uppercase;
-    transition: all 0.4s ease;
-    margin-top: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, background-color 0.2s;
+    box-shadow: 0 4px 12px rgba(0, 86, 179, 0.2);
 }
 
 .btn-connexion:hover {
-    background: var(--accent-color);
-    letter-spacing: 1px;
-    box-shadow: var(--success-glow);
+    background-color: #004494;
+    transform: translateY(-2px);
+}
+
+.btn-connexion:active {
+    transform: translateY(0);
 }
 
 #message {
-    text-align: center;
-    min-height: 20px;
-    margin-bottom: 10px;
     font-size: 0.85rem;
-    color: #ffda79; /* Jaune orangé pour les alertes */
+    text-align: center;
+    color: #dc2626;
+    margin-bottom: 1rem;
 }
 
 .register-link {
     text-align: center;
-    margin-top: 25px;
+    margin-top: 2rem;
     font-size: 0.9rem;
-    opacity: 0.8;
+    color: #64748b;
 }
 
-.register-link a {
-    color: var(--accent-color);
+.register-.register-link a {
+    color: var(--med-primary);
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600;
+    border-bottom: 2px solid transparent;
+    transition: border 0.2s;
 }
 
 .register-link a:hover {
-    text-decoration: underline;
+    border-bottom: 2px solid var(--med-primary);
 }

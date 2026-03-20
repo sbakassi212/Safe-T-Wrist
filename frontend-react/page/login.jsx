@@ -9,8 +9,7 @@ function Connexion() {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
-  // REMPLACE PAR L'IP DE TA VM ET LE PORT DU BACKEND (3000)
-  const API_URL = "http://172.29.18.254:3000/api/auth/login";
+  const API_URL = "http://172.29.18.254:3000";
 
   const handleLogin = async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
@@ -30,8 +29,8 @@ function Connexion() {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         
-        // On redirige vers le Dashboard
-        navigate('/dashboard');
+        // redirection vers le Dashboard
+        navigate('../dashboard');
       } else {
         // ERREUR : On affiche le message d'erreur du backend
         setMessage(data.error || "Email ou mot de passe incorrect");
@@ -76,6 +75,7 @@ function Connexion() {
 
           <button type="submit" className="btn-connexion">
             Entrer
+            
           </button>
         </form>
 

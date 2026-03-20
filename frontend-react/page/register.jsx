@@ -1,96 +1,71 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { authService } from '../services/api'; // Import du service pour communiquer avec Node.js
+import './register.css';
 
-function Register() {
-  // 1. Déclaration des variables d'état (State)
-  const [formData, setFormData] = useState({
-    nom: '',
-    prenom: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
-  const [message, setMessage] = useState({ text: '', color: '' });
-  const navigate = useNavigate();
+const Register = () => {
+    // États pour le formulaire (basés sur les besoins du backend)
+    const [formData, setFormData] = useState({
+        nom: '',
+        email: '',
+        password: '',
+        role: 'PROCHE' // Rôle par défaut selon ton backend
+    });
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
-  const API_URL = "http://172.29.18.254:3000"; 
+    // Mise à jour dynamique des champs
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.id]: e.target.value });
+    };
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        setError('');
 
-    // 2. Vérification des mots de passe 
-    if (formData.password !== formData.confirmPassword) {
-      setMessage({ text: "Les mots de passe ne correspondent pas !", color: "red" });
-      return;
-    }
+        try {
+            // Appel à la route app.post('/api/auth/register') de ton backend
+            await authService.register(formData);
+            
+            alert("Compte créé avec succès ! Vous pouvez vous connecter.");
+            navigate('/login'); // Redirection vers la connexion
+        } catch (err) {
+            // Gestion de l'erreur 409 (Email déjà utilisé) ou 500
+            setError(err.response?.data?.error || "Erreur lors de l'inscription");
+        }
+    };
 
-    try {
-      const response = await fetch(`${API_URL}/api/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nom: `${formData.nom} ${formData.prenom}`, // On regroupe pour ton backend
-          email: formData.email,
-          password: formData.password,
-          role: 'PROCHE' // Valeur par défaut
-        })
-      });
+    return (
+        <div className="register-container">
+            <form className="register-form" onSubmit={handleRegister}>
+                <h2>Créer un compte</h2>
+                <p>Rejoignez la plateforme Safe-t-wrist</p>
 
-      const data = await response.json();
+                {error && <p className="error-message">{error}</p>}
 
-      if (response.ok) {
-        setMessage({ text: "Inscription réussie ! Redirection...", color: "#28a745" });
-        
-        // Redirection après 2 secondes 
-        setTimeout(() => {
-          navigate('/login');
-        }, 2000);
-      } else {
-        setMessage({ text: data.error || "Erreur lors de l'inscription", color: "red" });
-      }
-    } catch (error) {
-      setMessage({ text: "Le serveur ne répond pas.", color: "red" });
-    }
-  };
+                <div className="input-group">
+                    <label htmlFor="nom">Nom complet</label>
+                    <input type="text" id="nom" onChange={handleChange} required />
+                </div>
 
-  // Fonction pratique pour mettre à jour le state
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
-  };
+                <div className="input-group">
+                    <label htmlFor="email">Adresse E-mail</label>
+                    <input type="email" id="email" onChange={handleChange} required />
+                </div>
 
-  return (
-    <div className="login-container"> {/* Utilise tes classes CSS existantes */}
-      <h2>Inscription Safe-T-Wrist</h2>
-      
-      <form onSubmit={handleRegister}>
-        <label htmlFor="nom">Nom</label>
-        <input type="text" id="nom" placeholder="Votre nom" required onChange={handleChange} />
+                <div className="input-group">
+                    <label htmlFor="password">Mot de passe</label>
+                    <input type="password" id="password" onChange={handleChange} required />
+                </div>
 
-        <label htmlFor="prenom">Prénom</label>
-        <input type="text" id="prenom" placeholder="Votre prénom" required onChange={handleChange} />
+                <button type="submit" className="register-button">S'inscrire</button>
 
-        <label htmlFor="email">Email</label>
-        <input type="email" id="email" placeholder="Safe-T-wrist@gmail.com" required onChange={handleChange} />
-
-        <label htmlFor="password">Mot de passe</label>
-        <input type="password" id="password" placeholder="********" required onChange={handleChange} />
-
-        <label htmlFor="confirmPassword">Confirmer le mot de passe</label>
-        <input type="password" id="confirmPassword" placeholder="********" required onChange={handleChange} />
-
-        {/* Affichage du message avec la couleur dynamique */}
-        {message.text && (
-          <p style={{ color: message.color, fontWeight: 'bold' }}>{message.text}</p>
-        )}
-
-        <button type="submit" className="btn-connexion">S'inscrire</button>
-      </form>
-
-      <p className="register-link">
-        Déjà inscrit ? <Link to="/login">Connecte-toi</Link>
-      </p>
-    </div>
-  );
-}
+                <p className="login-link">
+                    Déjà inscrit ? <Link to="/login">Se connecter</Link>
+                </p>
+            </form>
+        </div>
+    );
+};
 
 export default Register;

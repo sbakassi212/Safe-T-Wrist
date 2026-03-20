@@ -1,125 +1,80 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../Dashboard.css';
+import React, { useState, useEffect } from 'react';
+import Sidebar from '../components/Sidebar';
+import api from '../services/api'; // On utilise l'instance axios créée précédemment
+import './dashboard.css';
 
-function Dashboard() {
-  const [user, setUser] = useState(null);
-  const [measures, setMeasures] = useState({ bpm: '--', batterie: '--' });
-  const navigate = useNavigate();
+const Dashboard = () => {
+    // États pour les données dynamiques du bracelet
+    const [measure, setMeasure] = useState({ bpm: '--', batterie: '--' });
+    const [latestAlert, setLatestAlert] = useState(null);
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || {});
 
-  const API_URL = "http://172.29.18.254:3000";
-
-  useEffect(() => {
-    // 1. Récupération de l'utilisateur
-    const savedUser = localStorage.getItem('user');
-    if (!savedUser) {
-      navigate('/login');
-    } else {
-      setUser(JSON.parse(savedUser));
-    }
-
-    // 2. Récupération des données du bracelet
-    const fetchMeasures = async () => {
-      try {
-        const userData = JSON.parse(localStorage.getItem('user'));
-        if (userData && userData.id_bracelet) {
-          const response = await fetch(`${API_URL}/api/measures/last/${userData.id_bracelet}`);
-          const data = await response.json();
-          if (response.ok) {
-            setMeasures(data);
-          }
+    // Fonction pour récupérer les dernières mesures depuis le backend
+    const fetchLatestData = async () => {
+        try {
+            // On imagine une route GET que ton collègue va créer pour lire la BDD
+            const response = await api.get(`/measures/latest/${user.id_bracelet}`);
+            if (response.data) {
+                setMeasure(response.data);
+            }
+        } catch (error) {
+            console.error("Erreur lors de la récupération des mesures", error);
         }
-      } catch (error) {
-        console.error("Erreur récup mesures:", error);
-      }
     };
 
-    fetchMeasures();
-    const interval = setInterval(fetchMeasures, 5000); // Update toutes les 5s
+    // Rafraîchissement automatique toutes les 5 secondes (Temps réel)
+    useEffect(() => {
+        const interval = setInterval(fetchLatestData, 5000);
+        return () => clearInterval(interval);
+    }, []);
 
-    return () => clearInterval(interval);
-  }, [navigate]);
+    return (
+        <div className="dashboard-layout">
+            <Sidebar />
+            
+            <main className="dashboard-content">
+                <header className="dashboard-header">
+                    <h1>Tableau de bord</h1>
+                    <p>Bienvenue, {user.nom}. Surveillance active pour le bracelet #{user.id_bracelet}</p>
+                </header>
 
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate('/login');
-  };
+                <div className="stats-grid">
+                    {/* Carte Fréquence Cardiaque */}
+                    <div className="stat-card heart-rate">
+                        <div className="icon">❤️</div>
+                        <div className="info">
+                            <h3>Fréquence Cardiaque</h3>
+                            <p className="value">{measure.bpm} <span>BPM</span></p>
+                        </div>
+                    </div>
 
-  if (!user) return null;
+                    {/* Carte État Batterie */}
+                    <div className="stat-card battery">
+                        <div className="icon">🔋</div>
+                        <div className="info">
+                            <h3>Batterie Bracelet</h3>
+                            <p className="value">{measure.batterie}%</p>
+                        </div>
+                    </div>
+                </div>
 
-  return (
-    <div className="dashboard-page">
-      {/* --- BARRE LATÉRALE (SIDEBAR) --- */}
-      <aside className="sidebar">
-        <div className="sidebar-header">
-          <span className="logo-icon">⌚</span>
-          <span className="logo-text">Safe-T-Wrist</span>
+                {/* Section Alerte de Chute - Très important pour la sécurité */}
+                <section className={`alert-section ${latestAlert ? 'active' : ''}`}>
+                    <h3>Statut de sécurité</h3>
+                    {latestAlert ? (
+                        <div className="alert-box critical">
+                            <strong>⚠️ CHUTE DÉTECTÉE !</strong>
+                            <p>Une alerte a été envoyée aux contacts d'urgence.</p>
+                        </div>
+                    ) : (
+                        <div className="alert-box normal">
+                            ✅ Aucune anomalie détectée.
+                        </div>
+                    )}
+                </section>
+            </main>
         </div>
-        <nav className="sidebar-nav">
-          <a href="#" className="nav-item active">
-            <span className="nav-icon">📊</span> Tableau de bord
-          </a>
-          <a href="#" className="nav-item">
-            <span className="nav-icon">❤️</span> Santé
-          </a>
-          <a href="#" className="nav-item">
-            <span className="nav-icon">📅</span> Historique
-          </a>
-        </nav>
-        <div className="sidebar-footer">
-          <button onClick={handleLogout} className="nav-item logout" style={{background:'none', border:'none', width:'100%', cursor:'pointer', textAlign:'left'}}>
-            <span className="nav-icon">🚪</span> Déconnexion
-          </button>
-        </div>
-      </aside>
-
-      {/* --- CONTENU PRINCIPAL --- */}
-      <main className="main-content">
-        <header className="top-bar">
-          <h1>Bienvenue, {user.nom}</h1>
-          <div className="user-info">
-            <span className="user-name">{user.role}</span>
-            <div className="user-avatar">{user.nom ? user.nom[0] : 'U'}</div>
-          </div>
-        </header>
-
-        <div className="dashboard-container">
-          {/* BANNIÈRE DE STATUT */}
-          <div className="status-banner">
-            <div className="status-icon">✅</div>
-            <div className="status-info">
-              <h3>Bracelet Connecté</h3>
-              <p>ID : {user.id_bracelet || "Non lié"}</p>
-            </div>
-            <div className="battery-status">🔋 {measures.batterie}%</div>
-          </div>
-
-          {/* GRILLE DES STATISTIQUES */}
-          <div className="stats-grid">
-            <div className="stat-card heart-rate">
-              <div className="stat-header">
-                <span className="stat-icon">💓</span>
-                <h3>Rythme Cardiaque</h3>
-              </div>
-              <div className="stat-value">
-                {measures.bpm} <span className="unit">BPM</span>
-              </div>
-              <span className="stat-status normal">Normal</span>
-            </div>
-
-            <div className="stat-card alerts">
-              <div className="stat-header">
-                <span className="stat-icon">⚠️</span>
-                <h3>Dernière Alerte</h3>
-              </div>
-              <div className="stat-value">Aucune</div>
-              <span className="stat-status success">Sécurisé</span>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
-  );
-}
+    );
+};
 
 export default Dashboard;

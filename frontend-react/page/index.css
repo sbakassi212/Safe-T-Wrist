@@ -1,0 +1,25 @@
+:root {
+  --primary: #2c3e50; /* Bleu sombre de ta sidebar */
+  --secondary: #3498db;
+  --accent: #e74c3c; /* Pour les alertes chute */
+  --success: #27ae60; /* Pour le bracelet connecté */
+  --bg-light: #f4f7f6;
+  --white: #ffffff;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-light);
+  color: var(--primary);
+}
+
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  padding: 2rem;
+}

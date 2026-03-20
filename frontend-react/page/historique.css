@@ -1,0 +1,29 @@
+.styled-table, .history-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.styled-table th, .history-table th {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  text-align: left;
+}
+
+.styled-table td, .history-table td {
+  padding: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.badge.CHUTE { background: #fdeaea; color: #c0392b; }
+.badge.CARDIAQUE { background: #e8f4fd; color: #3498db; }

@@ -1,281 +1,240 @@
+require('dotenv').config(); // Toujours en premiere ligne pour charger le .env
+
 const express = require('express');
 const cors = require('cors');
-const bcrypt = require('bcrypt'); // Pour crypter
-const jwt = require('jsonwebtoken'); // Pour le token
-const db = require('./db'); // Ton fichier de connexion BDD
+const bcrypt = require('bcrypt'); 
+const jwt = require('jsonwebtoken'); 
 const path = require('path');
+const db = require('./db'); // Connexion a la base de donnees securisee
+
+// ==========================================
+// CONFIGURATION DES API EXTERNES
+// ==========================================
+
+// --- API TWILIO (WhatsApp/SMS) ---
+const twilio = require('twilio');
+const twilioClient = new twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+
+const sendWhatsApp = (numeroDestinataire, message) => {
+    twilioClient.messages.create({
+        body: `URGENCE SAFE-T-WRIST\n\n${message}`,
+        from: process.env.TWILIO_WHATSAPP_NUMBER, 
+        to: `whatsapp:${numeroDestinataire}`
+    })
+    .then(msg => console.log(`Message WhatsApp envoye ! ID: ${msg.sid}`))
+    .catch(error => console.error("Erreur Twilio WhatsApp :", error.message));
+};
+
+// --- API RESEND (E-mail) ---
+const { Resend } = require('resend');
+const resendClient = new Resend(process.env.RESEND_API_KEY);
+
+const sendEmail = (emailDestinataire, nomPatient, typeAlerte) => {
+    resendClient.emails.send({
+        from: 'onboarding@resend.dev', 
+        to: emailDestinataire,         
+        subject: `ALERTE SAFE-T-WRIST : ${typeAlerte}`,
+        html: `<h2>Urgence Medicale</h2>
+               <p>Le bracelet de <strong>${nomPatient}</strong> vient de detecter une alerte de type : <strong>${typeAlerte}</strong>.</p>
+               <p>Veuillez prendre contact ou verifier la situation immediatement.</p>`
+    })
+    .then(data => console.log(`E-mail envoye avec succes ! ID: ${data.id}`))
+    .catch(error => console.error("Erreur API Email :", error.message));
+};
+
+// ==========================================
+// INITIALISATION DE L'APPLICATION
+// ==========================================
 
 const app = express();
-
-// Middlewares
 app.use(express.json());
 app.use(cors());
-// On ne rend "public" QUE le dossier Front
 app.use(express.static(path.join(__dirname, '../Front'))); 
 
-// --- CONFIGURATION SECURITE ---
-const SECRET_KEY = "mon_super_secret_safe_t_wrist"; // à changer ultérieurement pour plus de sécurité (ex: variable d'environnement)
+const SECRET_KEY = process.env.SECRET_KEY; // Cle secrete importee du .env
 
-// Petit test pour voir si le serveur est vivant
-app.get('/', (req, res) => {
-    res.send('Serveur API Safe-T-Wrist en ligne');
-});
+// Test de vie du serveur
+app.get('/', (req, res) => res.send('Serveur API Safe-T-Wrist en ligne et securise.'));
+
 
 // ==========================================
-// 🔐 MODULE AUTHENTIFICATION
+// MODULE AUTHENTIFICATION
 // ==========================================
 
-// 1. Inscription (Register)
+// Inscription (Role PROCHE force par securite)
 app.post('/api/auth/register', async (req, res) => {
-    // CORRECTION : On ne récupère plus le 'role' depuis req.body pour éviter les failles
     const { email, password, nom } = req.body;
-
-    if (!email || !password || !nom) {
-        return res.status(400).json({ error: "Champs manquants" });
-    }
+    if (!email || !password || !nom) return res.status(400).json({ error: "Champs manquants" });
 
     try {
         const hash = await bcrypt.hash(password, 10);
-        // CORRECTION : On force le rôle PROCHE pour toute nouvelle inscription
-        const userRole = 'PROCHE'; 
-
-        const sql = "INSERT INTO users (email, password_hash, nom, role) VALUES (?, ?, ?, ?)";
-        db.query(sql, [email, hash, nom, userRole], (err, result) => {
-            if (err) {
-                if (err.code === 'ER_DUP_ENTRY') return res.status(409).json({ error: "Email déjà utilisé" });
-                return res.status(500).json({ error: "Erreur BDD" });
-            }
-            res.status(201).json({ message: "Utilisateur créé !" });
+        const sql = "INSERT INTO users (email, password_hash, nom, role) VALUES (?, ?, ?, 'PROCHE')";
+        
+        db.query(sql, [email, hash, nom], (err, result) => {
+            if (err) return err.code === 'ER_DUP_ENTRY' ? res.status(409).json({ error: "Email deja utilise" }) : res.status(500).json({ error: "Erreur BDD" });
+            res.status(201).json({ message: "Utilisateur cree !" });
         });
     } catch (error) {
         res.status(500).json({ error: "Erreur serveur" });
     }
 });
 
-// 2. Connexion (Login)
+// Connexion
 app.post('/api/auth/login', (req, res) => {
     const { email, password } = req.body;
-
-    const sql = "SELECT * FROM users WHERE email = ?";
-    db.query(sql, [email], (err, results) => {
-        if (err) return res.status(500).json({ error: "Erreur BDD" });
-        
-        if (results.length === 0) {
-            return res.status(401).json({ error: "Email ou mot de passe incorrect" });
-        }
+    db.query("SELECT * FROM users WHERE email = ?", [email], (err, results) => {
+        if (err || results.length === 0) return res.status(401).json({ error: "Identifiants incorrects" });
 
         const user = results[0];
-
         bcrypt.compare(password, user.password_hash, (err, isMatch) => {
-            if (!isMatch) {
-                return res.status(401).json({ error: "Email ou mot de passe incorrect" });
-            }
+            if (!isMatch) return res.status(401).json({ error: "Identifiants incorrects" });
 
-            const token = jwt.sign(
-                { id: user.id, role: user.role, nom: user.nom }, 
-                SECRET_KEY, 
-                { expiresIn: '24h' }
-            );
-
-            res.status(200).json({ 
-                message: "Connexion réussie", 
-                token: token,
-                user: { 
-                    id: user.id, 
-                    nom: user.nom, 
-                    role: user.role,
-                    id_bracelet: user.id_bracelet 
-                }
-            });
+            const token = jwt.sign({ id: user.id, role: user.role, nom: user.nom }, SECRET_KEY, { expiresIn: '24h' });
+            res.status(200).json({ message: "Connexion reussie", token, user: { id: user.id, nom: user.nom, role: user.role, id_bracelet: user.id_bracelet } });
         });
     });
 });
 
-// 3. Lier un bracelet à un utilisateur (Appairage) - VERSION DEBUG
+// Appairage du bracelet
 app.put('/api/auth/link-bracelet', (req, res) => {
     const { email, id_bracelet } = req.body;
+    if (!email || !id_bracelet) return res.status(400).json({ error: "Email et ID bracelet requis" });
 
-    if (!email || !id_bracelet) {
-        return res.status(400).json({ error: "Email et ID bracelet requis" });
-    }
-
-    // On cherche d'abord si un Admin existe déjà
-    const checkAdminSql = "SELECT id FROM users WHERE id_bracelet = ? AND role = 'ADMIN'";
-    
-    db.query(checkAdminSql, [id_bracelet], (err, results) => {
-        if (err) {
-            //  PREMIER POINT D'INSPECTION
-            console.error(" ERREUR SQL (Étape SELECT) :", err);
-            return res.status(500).json({ error: "Erreur BDD lors de la vérification" });
-        }
+    db.query("SELECT id FROM users WHERE id_bracelet = ? AND role = 'ADMIN'", [id_bracelet], (err, results) => {
+        if (err) return res.status(500).json({ error: "Erreur verification BDD" });
 
         const isFirst = (results.length === 0);
-        let updateSql = isFirst 
-            ? "UPDATE users SET id_bracelet = ?, role = 'ADMIN' WHERE email = ?" 
-            : "UPDATE users SET id_bracelet = ? WHERE email = ?";
+        const updateSql = isFirst ? "UPDATE users SET id_bracelet = ?, role = 'ADMIN' WHERE email = ?" : "UPDATE users SET id_bracelet = ? WHERE email = ?";
         
         db.query(updateSql, [id_bracelet, email], (err, result) => {
-            if (err) {
-                // DEUXIÈME POINT D'INSPECTION (Le plus probable)
-                console.error(" ERREUR SQL (Étape UPDATE) :", err);
-                return res.status(500).json({ error: "Erreur BDD lors de la mise à jour" });
-            }
-            
-            if (result.affectedRows === 0) {
-                return res.status(404).json({ error: "Utilisateur non trouvé" });
-            }
-
-            const msg = isFirst ? "Bracelet lié ! Vous êtes Administrateur." : "Bracelet lié en tant que Proche.";
-            res.status(200).json({ message: msg });
+            if (err || result.affectedRows === 0) return res.status(500).json({ error: "Erreur mise a jour ou utilisateur introuvable" });
+            res.status(200).json({ message: isFirst ? "Bracelet lie ! Vous etes Administrateur." : "Bracelet lie en tant que Proche." });
         });
     });
 });
 
+
 // ==========================================
-// 📡 ROUTE ACQUISITION : MESURES & ALERTES
+// ACQUISITION DES DONNEES ET ALERTES
 // ==========================================
 
+// Enregistrer une mesure normale
 app.post('/api/measures', (req, res) => {
     const { id_bracelet, bpm, batterie } = req.body;
+    if (!id_bracelet || !bpm || !batterie) return res.status(400).json({ error: "Donnees manquantes" });
 
-    if (!id_bracelet || !bpm || !batterie) {
-        return res.status(400).json({ error: "Données manquantes" });
-    }
-
-    const sql = "INSERT INTO measures (id_bracelet, bpm, batterie, date_heure) VALUES (?, ?, ?, NOW())";
-    
-    db.query(sql, [id_bracelet, bpm, batterie], (err, result) => {
-        if (err) {
-            console.error("Erreur SQL (Mesures) :", err);
-            return res.status(500).json({ error: "Erreur BDD" });
-        }
-        console.log(`Mesure enregistrée ! Bracelet: ${id_bracelet}, BPM: ${bpm}`);
-        res.status(201).json({ message: "Succès" });
+    db.query("INSERT INTO measures (id_bracelet, bpm, batterie, date_heure) VALUES (?, ?, ?, NOW())", [id_bracelet, bpm, batterie], (err) => {
+        if (err) return res.status(500).json({ error: "Erreur BDD" });
+        res.status(201).json({ message: "Mesure enregistree" });
     });
 });
 
+// Declencher une alerte (Chute/BPM anormal)
 app.post('/api/alerts', (req, res) => {
     const { id_bracelet, type_alerte } = req.body;
+    if (!id_bracelet || !type_alerte) return res.status(400).json({ error: "Donnees manquantes" });
 
-    if (!id_bracelet || !type_alerte) {
-        return res.status(400).json({ error: "Données manquantes" });
-    }
+    db.query("INSERT INTO alerts (id_bracelet, type_alerte, statut, date_heure) VALUES (?, ?, 0, NOW())", [id_bracelet, type_alerte], (err) => {
+        if (err) return res.status(500).json({ error: "Erreur BDD" });
+        
+        console.log(`ALERTE RECUE ! Type: ${type_alerte}`);
 
-    const sql = "INSERT INTO alerts (id_bracelet, type_alerte, statut, date_heure) VALUES (?, ?, 0, NOW())";
+        const sqlContacts = `SELECT c.tel, c.email, c.nom AS nom_contact, u.nom AS nom_patient FROM contacts c JOIN users u ON c.id_user = u.id WHERE u.id_bracelet = ?`;
+        db.query(sqlContacts, [id_bracelet], (err, contacts) => {
+            if (!err && contacts.length > 0) {
+                contacts.forEach(contact => {
+                    // Option WhatsApp (Decommenter si necessaire)
+                    // sendWhatsApp(contact.tel, `Alerte '${type_alerte}' declenchee pour ${contact.nom_patient}.`);
+                    
+                    if (contact.email) {
+                        sendEmail(contact.email, contact.nom_patient, type_alerte);
+                    }
+                });
+            } else {
+                console.log("Aucun contact d'urgence trouve. Notifications annulees.");
+            }
+        });
 
-    db.query(sql, [id_bracelet, type_alerte], (err, result) => {
-        if (err) {
-            console.error("Erreur SQL (Alertes) :", err);
-            return res.status(500).json({ error: "Erreur BDD" });
-        }
-        console.log(`ALERTE REÇUE ! Type: ${type_alerte}`);
-        res.status(201).json({ message: "Alerte traitée" });
+        res.status(201).json({ message: "Alerte traitee et notifications declenchees" });
     });
 });
 
+
 // ==========================================
-// 📊 MODULE CONSULTATION : DASHBOARD & HISTORIQUE
+// DASHBOARD ET HISTORIQUE
 // ==========================================
 
 app.get('/api/history/:id_bracelet', (req, res) => {
-    const id_bracelet = req.params.id_bracelet;
-    const sql = "SELECT * FROM alerts WHERE id_bracelet = ? ORDER BY date_heure DESC";
-
-    db.query(sql, [id_bracelet], (err, results) => {
-        if (err) return res.status(500).json({ error: "Erreur lors de la récupération de l'historique." });
+    db.query("SELECT * FROM alerts WHERE id_bracelet = ? ORDER BY date_heure DESC", [req.params.id_bracelet], (err, results) => {
+        if (err) return res.status(500).json({ error: "Erreur historique" });
         res.status(200).json(results);
     });
 });
 
 app.get('/api/last-measure/:id_bracelet', (req, res) => {
-    const id_bracelet = req.params.id_bracelet;
-    const sql = "SELECT * FROM measures WHERE id_bracelet = ? ORDER BY date_heure DESC LIMIT 1";
-
-    db.query(sql, [id_bracelet], (err, results) => {
-        if (err) return res.status(500).json({ error: "Erreur lors de la récupération des mesures." });
-        if (results.length === 0) return res.status(404).json({ message: "Aucune mesure disponible pour ce bracelet." });
+    db.query("SELECT * FROM measures WHERE id_bracelet = ? ORDER BY date_heure DESC LIMIT 1", [req.params.id_bracelet], (err, results) => {
+        if (err) return res.status(500).json({ error: "Erreur mesures" });
+        if (results.length === 0) return res.status(404).json({ message: "Aucune mesure" });
         res.status(200).json(results[0]);
     });
 });
 
+
 // ==========================================
-// 📞 GESTION DES CONTACTS D'URGENCE (ADMIN ONLY)
+// GESTION DES CONTACTS (CRUD ADMIN)
 // ==========================================
+
+// Middleware local (simplifie) pour verifier si l'utilisateur est admin
+const checkAdmin = (id_user, callback) => {
+    db.query("SELECT role FROM users WHERE id = ?", [id_user], (err, results) => {
+        if (err || results.length === 0 || results[0].role !== 'ADMIN') return callback(false);
+        callback(true);
+    });
+};
 
 app.post('/api/contacts', (req, res) => {
     const { nom, tel, email, id_user } = req.body;
+    if (!nom || !tel || !id_user) return res.status(400).json({ error: "Donnees incompletes" });
 
-    if (!nom || !tel || !id_user) return res.status(400).json({ error: "Le nom, le tel et l'id_user sont obligatoires." });
-
-    const telRegex = /^\+33\d{9}$/;
-    if (!telRegex.test(tel)) return res.status(400).json({ error: "Format invalide. Le numéro doit être au format +33XXXXXXXXX." });
-
-    const checkRoleSql = "SELECT role FROM users WHERE id = ?";
-    db.query(checkRoleSql, [id_user], (err, results) => {
-        if (err) return res.status(500).json({ error: "Erreur de connexion à la BDD." });
-        if (results.length === 0) return res.status(404).json({ error: "Utilisateur introuvable." });
-        if (results[0].role !== 'ADMIN') return res.status(403).json({ error: "Accès refusé : Seul un administrateur peut ajouter un contact." });
-
-        const insertSql = "INSERT INTO contacts (nom, tel, email, id_user) VALUES (?, ?, ?, ?)";
-        db.query(insertSql, [nom, tel, email, id_user], (err, result) => {
-            if (err) return res.status(500).json({ error: "Erreur lors de l'ajout du contact." });
-            res.status(201).json({ message: "Contact ajouté avec succès !", id_contact: result.insertId });
+    checkAdmin(id_user, (isAdmin) => {
+        if (!isAdmin) return res.status(403).json({ error: "Acces refuse" });
+        db.query("INSERT INTO contacts (nom, tel, email, id_user) VALUES (?, ?, ?, ?)", [nom, tel, email, id_user], (err, result) => {
+            if (err) return res.status(500).json({ error: "Erreur ajout" });
+            res.status(201).json({ message: "Contact ajoute", id_contact: result.insertId });
         });
     });
 });
 
 app.put('/api/contacts/:id', (req, res) => {
-    const id_contact = req.params.id;
     const { nom, tel, email, id_user } = req.body;
+    if (!id_user) return res.status(400).json({ error: "id_user requis" });
 
-    if (!id_user) return res.status(400).json({ error: "L'id_user est obligatoire pour vérifier les droits." });
-
-    if (tel) {
-        const telRegex = /^\+33\d{9}$/;
-        if (!telRegex.test(tel)) return res.status(400).json({ error: "Format invalide. Le numéro doit être au format +33XXXXXXXXX." });
-    }
-
-    const checkRoleSql = "SELECT role FROM users WHERE id = ?";
-    db.query(checkRoleSql, [id_user], (err, results) => {
-        if (err) return res.status(500).json({ error: "Erreur BDD." });
-        if (results.length === 0) return res.status(404).json({ error: "Utilisateur introuvable." });
-        if (results[0].role !== 'ADMIN') return res.status(403).json({ error: "Accès refusé : Seul un administrateur peut modifier un contact." });
-
-        const updateSql = "UPDATE contacts SET nom = COALESCE(?, nom), tel = COALESCE(?, tel), email = COALESCE(?, email) WHERE id = ?";
-        db.query(updateSql, [nom, tel, email, id_contact], (err, result) => {
-            if (err) return res.status(500).json({ error: "Erreur lors de la modification." });
-            if (result.affectedRows === 0) return res.status(404).json({ error: "Contact introuvable." });
-            res.status(200).json({ message: "Contact mis à jour avec succès !" });
+    checkAdmin(id_user, (isAdmin) => {
+        if (!isAdmin) return res.status(403).json({ error: "Acces refuse" });
+        db.query("UPDATE contacts SET nom = COALESCE(?, nom), tel = COALESCE(?, tel), email = COALESCE(?, email) WHERE id = ?", [nom, tel, email, req.params.id], (err, result) => {
+            if (err || result.affectedRows === 0) return res.status(404).json({ error: "Introuvable" });
+            res.status(200).json({ message: "Contact mis a jour" });
         });
     });
 });
 
 app.delete('/api/contacts/:id', (req, res) => {
-    const id_contact = req.params.id;
     const { id_user } = req.body;
+    if (!id_user) return res.status(400).json({ error: "id_user requis" });
 
-    if (!id_user) return res.status(400).json({ error: "L'id_user est obligatoire pour vérifier les droits." });
-
-    const checkRoleSql = "SELECT role FROM users WHERE id = ?";
-    db.query(checkRoleSql, [id_user], (err, results) => {
-        if (err) return res.status(500).json({ error: "Erreur BDD." });
-        if (results.length === 0) return res.status(404).json({ error: "Utilisateur introuvable." });
-        if (results[0].role !== 'ADMIN') return res.status(403).json({ error: "Accès refusé : Seul un administrateur peut supprimer un contact." });
-
-        const deleteSql = "DELETE FROM contacts WHERE id = ?";
-        db.query(deleteSql, [id_contact], (err, result) => {
-            if (err) return res.status(500).json({ error: "Erreur lors de la suppression." });
-            if (result.affectedRows === 0) return res.status(404).json({ error: "Contact introuvable." });
-            res.status(200).json({ message: "Contact supprimé avec succès !" });
+    checkAdmin(id_user, (isAdmin) => {
+        if (!isAdmin) return res.status(403).json({ error: "Acces refuse" });
+        db.query("DELETE FROM contacts WHERE id = ?", [req.params.id], (err, result) => {
+            if (err || result.affectedRows === 0) return res.status(404).json({ error: "Introuvable" });
+            res.status(200).json({ message: "Contact supprime" });
         });
     });
 });
 
 // ==========================================
-// LANCEMENT DU SERVEUR
+// DEMARRAGE DU SERVEUR
 // ==========================================
-// CORRECTION : Le app.listen doit toujours être à la fin du fichier !
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Serveur démarré sur le port ${PORT}`);
+    console.log(`Serveur demarre sur le port ${PORT}`);
 });

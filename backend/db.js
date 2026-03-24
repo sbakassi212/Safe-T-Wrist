@@ -1,18 +1,18 @@
+require('dotenv').config(); // Charge les variables d'environnement
 const mysql = require('mysql2');
 
 const db = mysql.createConnection({
-    host: '172.29.18.99',
-    user: 'tp2',                       
-    password: 'ismailadamyahyaanis2014@',   
-    database: 'safe_t_wrist'         
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,                       
+    password: process.env.DB_PASSWORD,   
+    database: process.env.DB_NAME        
 });
 
 db.connect((err) => {
     if (err) {
-        console.error('Erreur de connexion SQL :', err);
-        console.error('Vérifie que le mot de passe de "tp2" est correct.');
+        console.error('Erreur de connexion SQL :', err.message);
     } else {
-        console.log('Connecté à la BDD Safe-T-Wrist');
+        console.log('Connecte a la BDD Safe-T-Wrist');
     }
 });
 

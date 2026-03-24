@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-// On remplace localhost par l'IP réelle du serveur de test
-const API_URL = 'http://172.29.18.254:3000/api';
+const API_URL = 'http://172.29.18.99:3000';
 
 const api = axios.create({
     baseURL: API_URL,

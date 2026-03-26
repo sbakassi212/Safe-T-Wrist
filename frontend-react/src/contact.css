@@ -1,14 +1,14 @@
-/* Structure globale */
+/* --- Structure globale --- */
 .dashboard-layout {
     display: flex;
     min-height: 100vh;
     background-color: #f8f9fa;
 }
 
-/* Conteneur principal de la page Contacts */
+/* Conteneur principal */
 .contact-content {
     flex-grow: 1;
-    margin-left: 250px; /* Aligné avec la largeur de ta Sidebar */
+    margin-left: 250px; /* Largeur de la Sidebar */
     padding: 40px;
     box-sizing: border-box;
 }
@@ -24,170 +24,122 @@
     margin-top: 5px;
 }
 
-/* --- Section Formulaire --- */
-.contact-form-section {
+/* --- Section Formulaire (Carte blanche) --- */
+.contact-form-card {
     margin-top: 30px;
-}
-
-.contact-form {
     background: white;
     padding: 25px;
     border-radius: 12px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-.contact-form h3 {
+.contact-form-card h3 {
     margin-top: 0;
     margin-bottom: 20px;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: #2d3748;
-    border-left: 4px solid #4a90e2;
-    padding-left: 10px;
+    border-left: 4px solid #3687a4; /* Bleu médical */
+    padding-left: 12px;
 }
 
-/* Alignement des inputs sur une seule ligne */
-.input-row {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    align-items: center;
+/* --- LE FIX POUR L'ALIGNEMENT EN LIGNE --- */
+.contact-form-row {
+    display: flex !important;       /* Force le mode Flex */
+    flex-direction: row !important; /* Force l'alignement horizontal */
+    align-items: center;            /* Aligne verticalement au milieu */
+    gap: 15px;                      /* Espace entre les champs */
+    width: 100%;
 }
 
-.input-row input {
-    flex: 1;
-    min-width: 200px;
+.contact-form-row input {
+    flex: 1;                        /* Chaque input prend une part égale de l'espace */
+    min-width: 150px;               /* Taille minimum pour rester lisible */
     padding: 12px 15px;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
     outline: none;
-    transition: all 0.2s;
     font-size: 0.95rem;
+    transition: border-color 0.2s;
 }
 
-.input-row input:focus {
-    border-color: #4a90e2;
-    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+.contact-form-row input:focus {
+    border-color: #3687a4;
+    box-shadow: 0 0 0 3px rgba(54, 135, 164, 0.1);
 }
 
-/* --- Boutons du Formulaire --- */
+/* --- Boutons --- */
 .btn-add {
-    background-color: #2d3748;
+    background-color: #3687a4;
     color: white;
     border: none;
     padding: 12px 25px;
     border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s;
+    white-space: nowrap; /* Empêche le texte "Ajouter" de passer à la ligne */
 }
 
 .btn-add:hover {
-    background-color: #4a5568;
+    background-color: #2c6e86;
 }
 
-.btn-update {
-    background-color: #27ae60; /* Vert pour la mise à jour */
+.btn-save {
+    background-color: #27ae60;
     color: white;
     border: none;
     padding: 12px 25px;
     border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s;
-}
-
-.btn-update:hover {
-    background-color: #219150;
 }
 
 .btn-cancel {
     background-color: #edf2f7;
     color: #4a5568;
-    border: 1px solid #cbd5e0;
     padding: 12px 20px;
     border-radius: 8px;
-    font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s;
 }
 
-.btn-cancel:hover {
-    background-color: #e2e8f0;
-}
-
-/* --- Tableau des contacts --- */
-.contact-list {
+/* --- Tableau --- */
+.contact-table-container {
     margin-top: 40px;
-}
-
-.contact-list h3 {
-    color: #2d3748;
-    margin-bottom: 15px;
-}
-
-.styled-table {
-    width: 100%;
-    border-collapse: collapse;
     background: white;
     border-radius: 12px;
-    overflow: hidden; /* Pour que le border-radius s'applique aux lignes */
+    overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-.styled-table th {
+.contact-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.contact-table th {
     background-color: #f7fafc;
     padding: 15px;
     text-align: left;
     color: #4a5568;
-    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
     border-bottom: 2px solid #edf2f7;
 }
 
-.styled-table td {
+.contact-table td {
     padding: 15px;
     border-bottom: 1px solid #edf2f7;
     color: #2d3748;
-    vertical-align: middle;
 }
 
-/* --- Boutons d'action dans le tableau --- */
-.btn-edit {
-    background-color: #fff7ed;
-    color: #ea580c; /* Orange pour l'édition */
-    border: 1px solid #fdba74;
-    padding: 8px 14px;
+.actions-cell {
+    display: flex;
+    gap: 10px;
+}
+
+.edit-icon, .delete-icon {
+    background: none;
+    border: 1px solid #e2e8f0;
+    padding: 5px 10px;
     border-radius: 6px;
     cursor: pointer;
-    font-weight: 600;
-    margin-right: 10px;
-    transition: all 0.2s;
-}
-
-.btn-edit:hover {
-    background-color: #ffedd5;
-    color: #c2410c;
-}
-
-.btn-delete {
-    background-color: #fee2e2;
-    color: #dc2626;
-    border: 1px solid #fecaca;
-    padding: 8px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.2s;
-}
-
-.btn-delete:hover {
-    background-color: #fecaca;
-    color: #b91c1c;
-}
-
-/* Message quand le tableau est vide */
-.empty-msg {
-    text-align: center;
-    padding: 30px !important;
-    color: #a0aec0;
-    font-style: italic;
 }

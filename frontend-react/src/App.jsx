@@ -1,13 +1,12 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-// Import de tes pages
-// Note : Vérifie bien que les noms de fichiers correspondent (minuscules/majuscules)
+// Import des pages
 import Login from './login';
 import Register from './register';
 import Dashboard from './dashboard'; 
-import Historique from './historique'; // À créer si pas encore fait
-import Contact from './contact';       // À créer si pas encore fait
+import Historique from './historique'; 
+import Contact from './contact';       
 
 import './App.css';
 

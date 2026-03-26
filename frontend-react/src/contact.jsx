@@ -5,124 +5,102 @@ import './contact.css';
 
 const Contact = () => {
     const [contacts, setContacts] = useState([]);
-    const [user] = useState(JSON.parse(localStorage.getItem('user')) || {});
+    const [user] = useState(() => {
+        const saved = localStorage.getItem('user');
+        return saved ? JSON.parse(saved) : { id: null, role: 'PROCHE', id_bracelet: '' };
+    });
     
-    // État pour le formulaire (sert à l'ajout ET à la modification)
-    const [formContact, setFormContact] = useState({ nom: '', email: '', telephone: '' });
-    
-    // État pour savoir si on est en train de modifier un contact
-    const [editingId, setEditingId] = useState(null);
+    const [form, setForm] = useState({ nom: '', email: '', telephone: '' });
+    const [isEditing, setIsEditing] = useState(null);
 
-    // --- 1. CHARGER LES CONTACTS ---
+    // --- 1. CHARGEMENT DES CONTACTS ---
     const fetchContacts = async () => {
-        if (!user.id) return;
+        if (!user.id_bracelet) return;
         try {
-            const response = await api.get(`/contacts/${user.id}`);
-            setContacts(response.data);
+            const response = await api.get(`/contacts/${user.id_bracelet}`);
+            setContacts(response.data || []);
         } catch (error) {
-            console.error("Erreur de récupération :", error);
+            console.error("Erreur de chargement :", error);
+            setContacts([]);
         }
     };
 
     useEffect(() => {
         fetchContacts();
-    }, [user.id]);
+    }, [user.id_bracelet]);
 
     const handleChange = (e) => {
-        setFormContact({ ...formContact, [e.target.id]: e.target.value });
+        setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    // --- 2. LOGIQUE DE VALIDATION ---
-    const validateData = (data, isUpdating = false) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const telRegex = /^\+33[1-9][0-9]{8}$/;
-
-        if (!emailRegex.test(data.email)) {
-            alert("L'adresse e-mail n'est pas valide.");
-            return false;
-        }
-        if (!telRegex.test(data.telephone)) {
-            alert("Le téléphone doit être au format +33612345678.");
-            return false;
-        }
-
-        // Vérification des doublons (on ignore le contact lui-même si on est en train de le modifier)
-        const doublonEmail = contacts.find(c => c.email.toLowerCase() === data.email.toLowerCase() && c.id !== editingId);
-        const doublonTel = contacts.find(c => c.tel === data.telephone && c.id !== editingId);
-
-        if (doublonEmail) {
-            alert("Cet email est déjà utilisé par un autre contact.");
-            return false;
-        }
-        if (doublonTel) {
-            alert("Ce numéro est déjà utilisé par un autre contact.");
-            return false;
-        }
-        return true;
-    };
-
-    // --- 3. ENREGISTRER (AJOUT OU MODIFICATION) ---
+    // --- 2. ENREGISTRER (AVEC VALIDATIONS) ---
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!validateData(formContact)) return;
+
+        // --- A. VALIDATION DU FORMAT +33 ---
+        const telNettoye = form.telephone.trim();
+        
+        // On vérifie si ça commence par +33 ET si la longueur est correcte (+33 + 9 chiffres = 12)
+        if (!telNettoye.startsWith('+33')) {
+            alert("⚠️ Le numéro doit impérativement commencer par +33");
+            return;
+        }
+
+        if (telNettoye.length !== 12) {
+            alert("⚠️ Numéro invalide. Format attendu : +33612345678");
+            return;
+        }
+
+        // --- B. VÉRIFICATION DES DOUBLONS ---
+        const doublon = contacts.find(c => {
+            const memeEmail = c.email.toLowerCase() === form.email.toLowerCase();
+            const memeTel = c.tel === telNettoye;
+            return (memeEmail || memeTel) && c.id !== isEditing;
+        });
+
+        if (doublon) {
+            alert("⚠️ Un contact possède déjà cet email ou ce numéro.");
+            return;
+        }
+
+        // --- C. ENVOI AU SERVEUR ---
+        const payload = {
+            nom: form.nom,
+            email: form.email,
+            tel: telNettoye,
+            id_user: user.id 
+        };
 
         try {
-            if (editingId) {
-                // MODE MODIFICATION (PUT)
-                await api.put(`/contacts/${editingId}`, {
-                    nom: formContact.nom,
-                    tel: formContact.telephone,
-                    email: formContact.email,
-                    id_user: user.id
-                });
+            if (isEditing) {
+                await api.put(`/contacts/${isEditing}`, payload);
                 alert("✅ Contact mis à jour !");
             } else {
-                // MODE AJOUT (POST)
-                await api.post('/contacts', {
-                    nom: formContact.nom,
-                    tel: formContact.telephone,
-                    email: formContact.email,
-                    id_user: user.id 
-                });
+                await api.post('/contacts', payload);
                 alert("✅ Contact ajouté !");
             }
-
-            setFormContact({ nom: '', email: '', telephone: '' });
-            setEditingId(null);
+            
+            setForm({ nom: '', email: '', telephone: '' });
+            setIsEditing(null);
             fetchContacts(); 
         } catch (error) {
-            alert("❌ Erreur lors de l'opération.");
+            alert("❌ Erreur : Impossible d'enregistrer (Vérifiez les droits ADMIN)");
         }
     };
 
-    // --- 4. PRÉPARER LA MODIFICATION ---
-    const startEdit = (contact) => {
-        setEditingId(contact.id);
-        setFormContact({
-            nom: contact.nom,
-            email: contact.email,
-            telephone: contact.tel
-        });
-        // On remonte en haut de page pour voir le formulaire
-        window.scrollTo(0, 0);
-    };
-
-    const cancelEdit = () => {
-        setEditingId(null);
-        setFormContact({ nom: '', email: '', telephone: '' });
-    };
-
-    // --- 5. SUPPRIMER UN CONTACT ---
-    const handleDelete = async (id_contact) => {
+    const handleDelete = async (id) => {
         if (!window.confirm("Supprimer ce contact ?")) return;
         try {
-            await api.delete(`/contacts/${id_contact}`, {
-                data: { id_user: user.id }
-            });
+            await api.delete(`/contacts/${id}`, { data: { id_user: user.id } });
             fetchContacts();
         } catch (error) {
-            console.error("Erreur suppression :", error);
+            alert("❌ Erreur lors de la suppression.");
         }
+    };
+
+    const startEdit = (c) => {
+        setIsEditing(c.id);
+        setForm({ nom: c.nom, email: c.email, telephone: c.tel });
     };
 
     return (
@@ -132,39 +110,42 @@ const Contact = () => {
             <main className="contact-content">
                 <header className="contact-header">
                     <h1>👥 Contacts d'Urgence</h1>
-                    <p>Gérez les proches alertés pour le bracelet <strong>#{user.id_bracelet}</strong></p>
                 </header>
 
-                <section className="contact-form-section">
-                    <form onSubmit={handleSubmit} className="contact-form">
-                        <h3>{editingId ? "📝 Modifier le proche" : "➕ Ajouter un nouveau proche"}</h3>
-                        <div className="input-row">
-                            <input type="text" id="nom" placeholder="Nom / Pseudo" value={formContact.nom} onChange={handleChange} required />
-                            <input type="email" id="email" placeholder="Email" value={formContact.email} onChange={handleChange} required />
-                            <input type="tel" id="telephone" placeholder="+33612345678" value={formContact.telephone} onChange={handleChange} required />
+                {user.role === 'ADMIN' ? (
+                    <section className="contact-form-card">
+                        <h3>{isEditing ? "📝 Modifier" : "➕ Ajouter un proche"}</h3>
+                        <form onSubmit={handleSubmit} className="contact-form-row">
+                            <input type="text" name="nom" placeholder="Pseudo" value={form.nom} onChange={handleChange} required />
+                            <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} required />
+                            {/* Petit message d'aide pour le téléphone */}
+                            <input type="tel" name="telephone" placeholder="+33612345678" value={form.telephone} onChange={handleChange} required />
                             
-                            <button type="submit" className={editingId ? "btn-update" : "btn-add"}>
-                                {editingId ? "Enregistrer les modifications" : "Enregistrer"}
+                            <button type="submit" className={isEditing ? "btn-save" : "btn-add"}>
+                                {isEditing ? "Valider" : "Ajouter"}
                             </button>
-
-                            {editingId && (
-                                <button type="button" className="btn-cancel" onClick={cancelEdit}>
+                            
+                            {isEditing && (
+                                <button type="button" className="btn-cancel" onClick={() => {setIsEditing(null); setForm({nom:'', email:'', telephone:''})}}>
                                     Annuler
                                 </button>
                             )}
-                        </div>
-                    </form>
-                </section>
+                        </form>
+                    </section>
+                ) : (
+                    <div className="proche-notice">
+                        ℹ️ Seul l'Administrateur peut modifier ces contacts.
+                    </div>
+                )}
 
-                <section className="contact-list">
-                    <h3>Liste de vos contacts</h3>
-                    <table className="styled-table">
+                <section className="contact-table-container">
+                    <table className="contact-table">
                         <thead>
                             <tr>
-                                <th>Nom / Pseudo</th>
+                                <th>Pseudo</th>
                                 <th>Email</th>
                                 <th>Téléphone</th>
-                                <th>Actions</th>
+                                {user.role === 'ADMIN' && <th>Actions</th>}
                             </tr>
                         </thead>
                         <tbody>
@@ -173,19 +154,21 @@ const Contact = () => {
                                     <tr key={c.id}>
                                         <td>{c.nom}</td>
                                         <td>{c.email}</td>
-                                        <td style={{fontWeight: 'bold'}}>{c.tel}</td> 
-                                        <td>
-                                            <button onClick={() => startEdit(c)} className="btn-edit">
-                                                Modifier
-                                            </button>
-                                            <button onClick={() => handleDelete(c.id)} className="btn-delete">
-                                                Supprimer
-                                            </button>
-                                        </td>
+                                        <td style={{fontWeight: 'bold', color: '#3687a4'}}>{c.tel}</td>
+                                        {user.role === 'ADMIN' && (
+                                            <td className="actions-cell">
+                                                <button onClick={() => startEdit(c)} className="edit-icon">✏️</button>
+                                                <button onClick={() => handleDelete(c.id)} className="delete-icon">🗑️</button>
+                                            </td>
+                                        )}
                                     </tr>
                                 ))
                             ) : (
-                                <tr><td colSpan="4" className="empty-msg">Aucun contact trouvé.</td></tr>
+                                <tr>
+                                    <td colSpan={user.role === 'ADMIN' ? 4 : 3} className="empty-row">
+                                        Aucun contact trouvé.
+                                    </td>
+                                </tr>
                             )}
                         </tbody>
                     </table>

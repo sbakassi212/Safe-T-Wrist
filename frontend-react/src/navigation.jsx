@@ -1,12 +1,15 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import './Navbar.css';
+// CORRECTION : On utilise le bon nom de fichier présent dans ton dossier src
+import './navigation.css';
 
 const Navbar = () => {
     const navigate = useNavigate();
-    const user = JSON.parse(localStorage.getItem('user')) || { nom: "Utilisateur" };
+    
+    // Récupération sécurisée de l'utilisateur
+    const user = JSON.parse(localStorage.getItem('user')) || { nom: "Utilisateur", role: "PROCHE" };
 
-    // Fonction de déconnexion (Sécurité & RGPD)
+    // Fonction de déconnexion
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -16,21 +19,30 @@ const Navbar = () => {
     return (
         <nav className="navbar-sidebar">
             <div className="navbar-logo">
+                {/* ⚠️ Vérifie que le dossier assets existe bien dans src ! */}
                 <img src="/src/assets/logo.svg" alt="Logo" />
                 <span>Safe-t-wrist</span>
             </div>
 
             <div className="navbar-links">
-                {/* NavLink ajoute automatiquement une classe "active" quand on est sur la page */}
-                <NavLink title="Tableau de bord" to="/dashboard" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                <NavLink 
+                    to="/dashboard" 
+                    className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}
+                >
                     <span className="icon">📊</span> Tableau de bord
                 </NavLink>
 
-                <NavLink title="Historique" to="/historique" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                <NavLink 
+                    to="/historique" 
+                    className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}
+                >
                     <span className="icon">📜</span> Historique
                 </NavLink>
 
-                <NavLink title="Contacts d'urgence" to="/contact" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                <NavLink 
+                    to="/contact" 
+                    className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}
+                >
                     <span className="icon">📞</span> Contacts
                 </NavLink>
             </div>

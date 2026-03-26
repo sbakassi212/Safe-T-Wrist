@@ -1,45 +1,131 @@
-.login-container, .register-container {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f0f2f5;
+/*  BLANC SUR TOUT L'ÉCRAN (Écrase les bandes sombres) */
+body, html { 
+    margin: 0 !important; 
+    padding: 0 !important; 
+    height: 100vh !important; 
+    width: 100vw !important;
+    overflow: hidden !important; /* Empêche le scroll pour tout voir d'un coup */
+    background-color: #ffffff !important; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.login-form, .register-form {
-  background: white;
-  padding: 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  width: 100%;
-  max-width: 400px;
+/*CENTRE LE FORMULAIRE SUR FOND BLANC*/
+.login-container {
+    height: 100vh !important;
+    width: 100vw !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: #ffffff !important;
+}
+
+/*LE FORMULAIRE BLANC ET LARGE */
+.login-form {
+    background-color: #ffffff !important;
+    width: 90% !important;
+    max-width: 1100px !important; 
+    padding: 40px 80px !important;
+    border-radius: 20px !important;
+    text-align: center !important;
+    /* Ombre très légère pour le relief sur fond blanc */
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.05) !important; 
+    border-top: 12px solid #3687a4 !important; /* Bordure Bleue */
+    box-sizing: border-box !important;
+}
+
+/* 4. LE TITRE CYAN  ET GÉANT ET SUR UNE LIGNE */
+.login-form h2 {
+    color: #5cecec !important;
+    font-size: 45px !important;
+    font-weight: 700 !important;
+    margin: 0 0 10px 0 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    white-space: nowrap !important; /* Empêche le titre de se couper */
+}
+
+.login-form p {
+    color: #888 !important;
+    font-size: 18px !important;
+    margin-bottom: 30px !important;
 }
 
 .input-group {
-  margin-bottom: 1.2rem;
+    margin-bottom: 20px !important;
+    width: 100% !important;
+    max-width: 850px !important; 
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: left !important;
 }
 
 .input-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
+    display: block !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    margin-bottom: 6px !important;
+    color: #333 !important;
 }
 
 .input-group input {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  box-sizing: border-box; /* Important pour ne pas dépasser */
+    width: 100% !important;
+    padding: 16px 20px !important; 
+    font-size: 18px !important;
+    border: 2px solid #dce4ec !important;
+    border-radius: 12px !important;
+    background: #fbfdff !important;
+    box-sizing: border-box !important;
 }
 
-.login-button, .register-button {
-  width: 100%;
-  padding: 0.8rem;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
+.input-group input:focus {
+    outline: none !important;
+    border-color: #3687a4 !important;
+    background: #fff !important;
+}
+
+/*LE BOUTON SE CONNECTER*/
+.login-button {
+    width: 100% !important;
+    max-width: 850px !important;
+    padding: 22px !important;
+    background-color: #3687a4 !important; /* COULEUR BLEUE */
+    color: #ffffff !important;           /* TEXTE BLANC */
+    border: none !important;
+    border-radius: 12px !important;
+    font-size: 26px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    margin: 15px auto 0 auto !important;
+    text-transform: uppercase !important;
+    display: block !important;
+}
+
+.login-button:hover {
+    background-color: #2c6e88 !important;
+}
+
+/* 7. LIEN VERS L'INSCRIPTION */
+.register-link {
+    margin-top: 25px !important;
+    font-size: 16px !important;
+    color: #666 !important;
+}
+
+.register-link a {
+    color: #3687a4 !important;
+    text-decoration: none !important;
+    font-weight: 700 !important;
+    margin-left: 8px !important;
+}
+
+/*MESSAGE D'ERREUR*/
+.error-message {
+    color: #ff4d4d !important;
+    background: #fff2f2 !important;
+    padding: 8px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    max-width: 850px !important;
+    margin: 0 auto 15px auto !important;
+    font-size: 14px !important;
 }

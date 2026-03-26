@@ -1,45 +1,118 @@
-.login-container, .register-container {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f0f2f5;
+/* Thème Médical PC - LARGEUR MAX & SANS SCROLL */
+@import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap');
+
+:root {
+  --med-blue: #3687a4;      /* Bleu bouton */
+  --header-cyan: #5cecec;   /* Cyan titre */
 }
 
-.login-form, .register-form {
-  background: white;
-  padding: 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  width: 100%;
-  max-width: 400px;
+body, html { 
+  margin: 0; 
+  padding: 0; 
+  height: 100vh; 
+  width: 100vw;
+  overflow: hidden; /* Supprime le scroll */
+  background-color: #ffffff !important; /* TOUT LE FOND DEVIENT BLANC */
+  font-family: 'Segoe UI', sans-serif;
 }
+
+.register-container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff !important; /* SUPPRIME LES BANDES SOMBRES */
+}
+
+.register-form {
+  background: white;
+  width: 90%; 
+  max-width: 1000px; /* Grande largeur comme ton dessin */
+  padding: 30px 60px; /* Réduit pour éviter le scroll */
+  box-sizing: border-box;
+  text-align: center;
+  border-top: 8px solid var(--med-blue);
+  border-radius: 15px;
+  /* Optionnel : petite ombre pour voir les bords si besoin */
+  box-shadow: 0 5px 30px rgba(0,0,0,0.05);
+}
+
+/* Titre - Un peu plus compact */
+.register-form h2 {
+  color: var(--header-cyan);
+  font-size: 38px;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+  text-transform: uppercase;
+}
+
+.register-form p {
+  color: #888;
+  font-size: 16px;
+  margin-bottom: 30px; /* Espace réduit */
+}
+
 
 .input-group {
-  margin-bottom: 1.2rem;
+  margin-bottom: 20px; /* Espace entre les champs réduit */
+  width: 100%;
+  max-width: 800px; 
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
 }
 
 .input-group label {
   display: block;
-  margin-bottom: 0.5rem;
+  font-size: 16px;
   font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
 }
 
 .input-group input {
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  box-sizing: border-box; /* Important pour ne pas dépasser */
+  padding: 14px 18px; /* RÉDUIT : permet de tout voir sans scroll */
+  font-size: 18px;
+  border: 1.5px solid #dce4ec;
+  border-radius: 8px;
+  background: #fbfdff;
+  box-sizing: border-box;
 }
 
-.login-button, .register-button {
+.input-group input:focus {
+  outline: none;
+  border-color: var(--med-blue);
+}
+
+/* Bouton - Large mais moins haut */
+.register-button {
   width: 100%;
-  padding: 0.8rem;
-  background-color: #3498db;
+  max-width: 800px;
+  padding: 18px; /* RÉDUIT : gain de place vertical */
+  background-color: var(--med-blue);
   color: white;
   border: none;
-  border-radius: 6px;
-  font-weight: bold;
+  border-radius: 8px;
+  font-size: 22px;
+  font-weight: 700;
   cursor: pointer;
+  margin-top: 10px;
+  text-transform: uppercase;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.login-link {
+  margin-top: 25px;
+  font-size: 15px;
+  color: #666;
+}
+
+.login-link a {
+  color: var(--med-blue);
+  text-decoration: none;
+  font-weight: 700;
 }

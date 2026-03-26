@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { authService } from '../services/api'; // Import du service pour communiquer avec Node.js
+// CORRECTION : api.jsx est maintenant dans le même dossier
+import { authService } from './api'; 
 import './register.css';
 
 const Register = () => {
-    // États pour le formulaire (basés sur les besoins du backend)
+    // États pour le formulaire
     const [formData, setFormData] = useState({
         nom: '',
         email: '',
         password: '',
-        role: 'PROCHE' // Rôle par défaut selon ton backend
+        role: 'PROCHE' // Rôle par défaut
     });
     const [error, setError] = useState('');
     const navigate = useNavigate();
@@ -24,13 +25,12 @@ const Register = () => {
         setError('');
 
         try {
-            // Appel à la route app.post('/api/auth/register') de ton backend
+            // Appel au service dans api.jsx
             await authService.register(formData);
             
             alert("Compte créé avec succès ! Vous pouvez vous connecter.");
-            navigate('/login'); // Redirection vers la connexion
+            navigate('/login'); 
         } catch (err) {
-            // Gestion de l'erreur 409 (Email déjà utilisé) ou 500
             setError(err.response?.data?.error || "Erreur lors de l'inscription");
         }
     };

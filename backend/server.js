@@ -231,6 +231,25 @@ app.delete('/api/contacts/:id', (req, res) => {
     });
 });
 
+
+// Recuperer la liste des contacts pour tout le monde (via le bracelet)
+app.get('/api/contacts/:id_bracelet', (req, res) => {
+    const id_bracelet = req.params.id_bracelet;
+    
+    // On recupere les contacts lies au bracelet de l'utilisateur
+    const sql = `
+        SELECT c.id, c.nom, c.tel, c.email 
+        FROM contacts c 
+        JOIN users u ON c.id_user = u.id 
+        WHERE u.id_bracelet = ?
+    `;
+    
+    db.query(sql, [id_bracelet], (err, results) => {
+        if (err) return res.status(500).json({ error: "Erreur lors de la recuperation des contacts" });
+        res.status(200).json(results);
+    });
+});
+
 // ==========================================
 // DEMARRAGE DU SERVEUR
 // ==========================================

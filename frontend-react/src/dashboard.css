@@ -1,50 +1,23 @@
-/* --- STRUCTURE GLOBALE --- */
+/* --- LAYOUT --- */
 .dashboard-layout {
     display: flex;
     min-height: 100vh;
     background-color: #f4f7f6;
-    font-family: 'Segoe UI', sans-serif;
 }
 
-/* Sidebar Fixe à gauche */
-.sidebar {
-    width: 260px;
-    background-color: #1a202c;
-    color: white;
-    position: fixed;
-    height: 100vh;
-    z-index: 100;
-}
-
-/* ZONE DE CONTENU : Le correctif pour le texte caché */
 .dashboard-content {
     flex: 1;
-    margin-left: 260px; /* Décale tout le contenu après la barre noire */
+    margin-left: 260px; /* Espace pour la Sidebar */
     padding: 40px;
-    box-sizing: border-box;
-    width: calc(100% - 260px);
-}
-
-/* En-tête */
-.dashboard-header {
-    margin-bottom: 30px;
 }
 
 .dashboard-header h1 {
     font-size: 2rem;
     color: #2d3748;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
 }
 
-.warning-text {
-    color: #e53e3e;
-    background: #fff5f5;
-    padding: 12px;
-    border-radius: 8px;
-    font-weight: 600;
-}
-
-/* GRILLE DE STATS (BPM & BATTERIE) */
+/* --- GRILLE DE STATS --- */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -54,69 +27,93 @@
 
 .stat-card {
     background: white;
-    padding: 20px;
-    border-radius: 12px;
+    padding: 25px;
+    border-radius: 15px;
     display: flex;
     align-items: center;
-    gap: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    gap: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
-.stat-card .icon {
-    font-size: 2.5rem;
-}
-
-.stat-card h3 {
-    font-size: 1rem;
-    color: #718096;
-}
+.stat-card .icon { font-size: 2.5rem; }
 
 .stat-card .value {
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 800;
     color: #2d3748;
+    display: flex;
+    align-items: center;
 }
 
-.stat-card .value span {
-    font-size: 0.9rem;
-    color: #a0aec0;
+.stat-card .value span { font-size: 1rem; color: #a0aec0; margin-left: 5px; }
+
+/* Point clignotant "Live" */
+.dot {
+    width: 8px;
+    height: 8px;
+    background: #48bb78;
+    border-radius: 50%;
+    margin-left: 15px;
+    animation: blink 1.5s infinite;
 }
 
-/* SECTION ALERTES */
-.alert-section {
-    background: white;
+@keyframes blink { 
+    0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } 
+}
+
+/* Alertes couleurs */
+.critical .value { color: #e53e3e !important; }
+.low { color: #e53e3e !important; }
+
+/* --- BANNIÈRE AUTOMATIQUE --- */
+.automation-banner {
+    background: #ebf8ff;
+    border: 1px solid #bee3f8;
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    color: #2b6cb0;
 }
 
-.alert-box {
-    margin-top: 15px;
-    padding: 15px;
+.status-label { display: flex; gap: 15px; align-items: center; }
+.status-icon { font-size: 1.5rem; }
+.status-label h4 { margin: 0; font-weight: 700; }
+.status-label p { margin: 5px 0 0 0; font-size: 0.9rem; }
+
+/* --- CARD LIAISON BRACELET --- */
+.link-section {
+    display: flex; justify-content: center; align-items: center; height: 50vh;
+}
+
+.link-card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    max-width: 400px;
+}
+
+.link-card input {
+    width: 100%;
+    padding: 12px;
+    margin: 20px 0;
+    border: 2px solid #e2e8f0;
     border-radius: 8px;
-    border-left: 5px solid;
+    box-sizing: border-box;
 }
 
-.alert-box.normal {
-    background-color: #f0fff4;
-    color: #2f855a;
-    border-color: #48bb78;
-}
-
-.alert-box.critical {
-    background-color: #fff5f5;
-    color: #c53030;
-    border-color: #f56565;
+.link-card button {
+    background: #3687a4;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
     font-weight: bold;
+    width: 100%;
 }
 
-/* RESPONSIVE MOBILE */
+/* --- MOBILE --- */
 @media (max-width: 768px) {
-    .sidebar { width: 60px; }
-    .sidebar span { display: none; }
-    .dashboard-content {
-        margin-left: 60px;
-        width: calc(100% - 60px);
-        padding: 20px;
-    }
+    .dashboard-content { margin-left: 70px; padding: 20px; }
 }

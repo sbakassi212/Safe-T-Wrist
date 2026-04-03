@@ -1,0 +1,103 @@
+/* --- LAYOUT GLOBAL --- */
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f4f7f6; /* Fond gris clair identique au Dashboard */
+}
+
+.dashboard-content {
+    flex: 1;
+    margin-left: 260px; /* L'espace exact de ta Sidebar sombre */
+    padding: 40px;
+    /* On retire le justify-content: center pour ne plus centrer */
+    display: block; 
+}
+
+/* --- TITRES --- */
+.dashboard-header {
+    margin-bottom: 30px;
+    text-align: left; /* Aligné à gauche */
+}
+
+.dashboard-header h1 {
+    font-size: 2.2rem;
+    color: #2d3748;
+    font-weight: 700;
+    margin: 0;
+}
+
+.dashboard-header p {
+    color: #718096;
+    font-size: 1.1rem;
+    margin-top: 5px;
+}
+
+/* --- LA CARTE DE CONTENU --- */
+.mentions-box {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    max-width: 1000px; /* Limite la largeur pour la lecture, mais aligné à gauche */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* --- SECTIONS --- */
+.legal-section {
+    margin-bottom: 30px;
+}
+
+.legal-section h2 {
+    font-size: 1.6rem;
+    color: #2d3748;
+    margin-bottom: 15px;
+    border-left: 4px solid #3687a4; /* Petite barre de rappel couleur */
+    padding-left: 15px;
+}
+
+.legal-section p {
+    color: #4a5568;
+    line-height: 1.8;
+    font-size: 1.05rem;
+}
+
+/* --- BANNIÈRE RGPD (Style Dashboard) --- */
+.automation-banner {
+    background: #ebf8ff;
+    border: 1px solid #bee3f8;
+    padding: 25px;
+    border-radius: 12px;
+    margin: 30px 0;
+    display: flex;
+    align-items: center;
+}
+
+.status-label {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.status-icon {
+    font-size: 2rem;
+}
+
+.status-label h4 {
+    margin: 0;
+    color: #2b6cb0;
+    font-size: 1.2rem;
+}
+
+.status-label p {
+    margin: 5px 0 0 0;
+    color: #2c5282;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .dashboard-content {
+        margin-left: 0;
+        padding: 20px;
+    }
+}

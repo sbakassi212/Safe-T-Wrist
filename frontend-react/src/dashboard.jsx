@@ -4,11 +4,11 @@ import api from './api';
 import './dashboard.css';
 
 const Dashboard = () => {
-    const [measure, setMeasure] = useState({ bpm: '--', batterie: '--' });
+    const [measure, setMeasure] = useState({ bpm: '--', batterie: '--', derniere_alerte: null });
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || {});
-    const [braceletInput, setBraceletInput] = useState(''); // Pour le champ de texte
+    const [braceletInput, setBraceletInput] = useState('');
 
-    // --- FONCTION POUR LIER LE BRACELET ---
+    // --- LIER LE BRACELET ---
     const handleLinkBracelet = async (e) => {
         e.preventDefault();
         try {
@@ -16,21 +16,21 @@ const Dashboard = () => {
                 email: user.email,
                 id_bracelet: braceletInput
             });
-
             alert(response.data.message);
-
-            // IMPORTANT : On met à jour l'utilisateur dans le stockage local
-            // car son rôle a peut-être changé (PROCHE -> ADMIN)
-            const updatedUser = { ...user, id_bracelet: braceletInput, role: response.data.message.includes('Administrateur') ? 'ADMIN' : 'PROCHE' };
+            const updatedUser = { 
+                ...user, 
+                id_bracelet: braceletInput, 
+                role: response.data.message.includes('Administrateur') ? 'ADMIN' : 'PROCHE' 
+            };
             localStorage.setItem('user', JSON.stringify(updatedUser));
             setUser(updatedUser);
-            
-            window.location.reload(); // On rafraîchit pour mettre à jour la Sidebar et les accès
+            window.location.reload(); 
         } catch (error) {
-            alert("Erreur lors de l'appairage : " + (error.response?.data?.error || "Serveur injoignable"));
+            alert("Erreur : " + (error.response?.data?.error || "Serveur injoignable"));
         }
     };
 
+    // --- RÉCUPÉRER LES DONNÉES ---
     const fetchLatestData = async () => {
         if (!user.id_bracelet) return;
         try {
@@ -54,19 +54,17 @@ const Dashboard = () => {
             <main className="dashboard-content">
                 <header className="dashboard-header">
                     <h1>Tableau de bord</h1>
-                    <p>Bienvenue, {user.nom}.</p>
+                    <p>Bienvenue, <strong>{user.nom}</strong>. Surveillance en temps réel.</p>
                 </header>
 
-                {/* SI PAS DE BRACELET : On affiche le formulaire d'appairage */}
                 {!user.id_bracelet ? (
                     <section className="link-section">
                         <div className="link-card">
                             <h3>🔗 Lier un bracelet</h3>
-                            <p>Entrez l'identifiant de votre appareil Safe-T-Wrist pour commencer la surveillance.</p>
+                            <p>Entrez l'ID de votre appareil Safe-T-Wrist pour commencer.</p>
                             <form onSubmit={handleLinkBracelet}>
                                 <input 
                                     type="text" 
-                                    placeholder="Ex: BRACELET_01" 
                                     value={braceletInput}
                                     onChange={(e) => setBraceletInput(e.target.value)}
                                     required 
@@ -76,20 +74,35 @@ const Dashboard = () => {
                         </div>
                     </section>
                 ) : (
-                    /* SI BRACELET LIÉ : On affiche les mesures habituelles */
-                    <div className="stats-grid">
-                        <div className="stat-card heart-rate">
-                            <div className="icon">❤️</div>
-                            <div className="info">
-                                <h3>Fréquence Cardiaque</h3>
-                                <p className="value">{measure.bpm} <span>BPM</span></p>
+                    <div className="dashboard-grid">
+                        <div className="stats-grid">
+                            {/* BPM CARD */}
+                            <div className={`stat-card heart-rate ${measure.bpm > 100 ? 'critical' : ''}`}>
+                                <div className="icon">❤️</div>
+                                <div className="info">
+                                    <h3>Fréquence Cardiaque</h3>
+                                    <p className="value">{measure.bpm} <span>BPM</span> <span className="dot"></span></p>
+                                </div>
+                            </div>
+
+                            {/* BATTERY CARD */}
+                            <div className="stat-card battery">
+                                <div className="icon">{measure.batterie < 20 ? '🪫' : '🔋'}</div>
+                                <div className="info">
+                                    <h3>Batterie</h3>
+                                    <p className={`value ${measure.batterie < 20 ? 'low' : ''}`}>{measure.batterie}%</p>
+                                </div>
                             </div>
                         </div>
-                        <div className="stat-card battery">
-                            <div className="icon">🔋</div>
-                            <div className="info">
-                                <h3>Batterie</h3>
-                                <p className="value">{measure.batterie}%</p>
+
+                        {/* STATUS AUTOMATIQUE */}
+                        <div className="automation-banner">
+                            <div className="status-label">
+                                <span className="status-icon">🛡️</span>
+                                <div>
+                                    <h4>Protection Active</h4>
+                                    <p>En cas de chute, un message WhatsApp est envoyé automatiquement aux proches.</p>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -6,24 +6,20 @@ import Login from './login';
 import Register from './register';
 import Dashboard from './dashboard'; 
 import Historique from './historique'; 
-import Contact from './contact';       
+import Contact from './contact'; 
+import MentionsLegales from "./legal";
 
 import './App.css';
 
-/**
- * LE VIGILE (ProtectedRoute)
- * Empêche l'accès aux pages si l'utilisateur n'est pas connecté.
- */
+/* Empêche l'accès aux pages si l'utilisateur n'est pas connecté. */
 const ProtectedRoute = ({ children }) => {
     const token = localStorage.getItem('token');
     
     if (!token) {
-        // Si pas de jeton dans le navigateur, on renvoie vers le login
         console.log("🚫 Accès refusé : Redirection vers Login");
         return <Navigate to="/login" replace />;
     }
 
-    // Si le jeton existe, on affiche la page demandée
     return children;
 };
 
@@ -36,36 +32,33 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         
-        {/* --- ROUTES PROTÉGÉES (Nécessitent une connexion) --- */}
-        {/* Le Dashboard */}
+        {/* --- ROUTES PROTÉGÉES --- */}
         <Route 
           path="/dashboard" 
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          } 
+          element={<ProtectedRoute><Dashboard /></ProtectedRoute>} 
         /> 
 
-        {/* L'Historique */}
         <Route 
           path="/historique" 
+          element={<ProtectedRoute><Historique /></ProtectedRoute>} 
+        /> 
+
+        <Route 
+          path="/contact" 
+          element={<ProtectedRoute><Contact /></ProtectedRoute>} 
+        /> 
+
+        {/* 2. AJOUT DE LA ROUTE ICI */}
+        <Route 
+          path="/mentions-legales" 
           element={
             <ProtectedRoute>
-              <Historique />
+              <MentionsLegales />
             </ProtectedRoute>
           } 
         /> 
 
-        {/* Les Contacts d'urgence */}
-        <Route 
-          path="/contact" 
-          element={
-            <ProtectedRoute>
-              <Contact />
-            </ProtectedRoute>
-          } 
-        /> 
+        {/* Redirection par défaut pour les pages inconnues */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </div>

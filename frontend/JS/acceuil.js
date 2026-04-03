@@ -1,1 +1,0 @@
-alert("Merci d'aider les personnes âgées avec ce bracelet médical !");

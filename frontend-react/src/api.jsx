@@ -53,4 +53,4 @@ export const authService = {
     linkBracelet: (data) => api.put('/auth/link-bracelet', data)
 };
 
-export default api;
+export default api;modification teste

@@ -92,7 +92,7 @@ const Dashboard = () => {
                                     <h3>Batterie</h3>
                                     <p className={`value ${measure.batterie < 20 ? 'low' : ''}`}>{measure.batterie}%</p>
                                 </div>
-                            </div>
+                            </div>    
                         </div>
 
                         {/* STATUS AUTOMATIQUE */}

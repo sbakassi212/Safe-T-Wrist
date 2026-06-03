@@ -33,11 +33,11 @@ const Contact = () => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    // --- 2. ENREGISTRER (AVEC VALIDATIONS) ---
+    // ENREGISTRER (AVEC VALIDATIONS) 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // --- A. VALIDATION DU FORMAT +33 ---
+        // VALIDATION DU FORMAT +33 
         const telNettoye = form.telephone.trim();
         
         // On vérifie si ça commence par +33 ET si la longueur est correcte (+33 + 9 chiffres = 12)
@@ -51,7 +51,7 @@ const Contact = () => {
             return;
         }
 
-        // --- B. VÉRIFICATION DES DOUBLONS ---
+        //  VÉRIFICATION DES DOUBLONS
         const doublon = contacts.find(c => {
             const memeEmail = c.email.toLowerCase() === form.email.toLowerCase();
             const memeTel = c.tel === telNettoye;
@@ -63,7 +63,7 @@ const Contact = () => {
             return;
         }
 
-        // --- C. ENVOI AU SERVEUR ---
+        //  ENVOI AU SERVEUR 
         const payload = {
             nom: form.nom,
             email: form.email,

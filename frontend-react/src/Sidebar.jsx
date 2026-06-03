@@ -31,7 +31,6 @@ const Sidebar = () => {
                     <span className="icon">📞</span> Contacts
                 </Link>
 
-                {/* --- DÉPLACÉ ICI : Juste en dessous de Contacts --- */}
                 <Link to="/mentions-legales" className={`menu-item ${location.pathname === '/mentions-legales' ? 'active' : ''}`}>
                     <span className="icon">⚖️</span> Mentions Légales
                 </Link>
@@ -45,5 +44,4 @@ const Sidebar = () => {
         </div>
     );
 };
-
 export default Sidebar;

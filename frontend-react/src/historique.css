@@ -1,103 +1,185 @@
-/* Structure globale pour aligner la Sidebar et le Contenu */
-.dashboard-layout {
-    display: flex;
-    min-height: 100vh;
+/* ==========================================================================
+   1. GESTION DU SCROLL ET DE LA HAUTEUR
+   Le but est d'empêcher que la page ne soit "bloquée" à la taille de l'écran.
+   ========================================================================== */
+html, body, #root, .app-main-container {
+    /* "height: auto" permet à la page de grandir selon le nombre d'alertes */
+    height: auto !important;
+    min-height: 100vh !important;
+    /*forcer l'apparition de la barre de défilement si le contenu dépasse */
+    overflow-y: auto !important;
     background-color: #f8f9fa;
+    font-family: 'Inter', sans-serif;
 }
 
-/* Conteneur principal de la page Historique */
+/* ==========================================================================
+   2. MISE EN PAGE PRINCIPALE (LAYOUT)
+   ========================================================================== */
+.dashboard-layout {
+    display: flex !important;
+    min-height: 100vh !important;
+}
+
 .history-content {
-    flex-grow: 1;
-    margin-left: 250px; /* Décale le texte pour qu'il ne soit pas sous la sidebar */
-    padding: 40px;
-    box-sizing: border-box;
+    flex: 1 !important;
+    /* On laisse 260px à gauche pour ne pas cacher le menu (Sidebar) */
+    margin-left: 260px !important;
+    padding: 40px !important;
+    /* Padding-bottom important pour pouvoir scroller "sous" le tableau */
+    padding-bottom: 150px !important;
+    box-sizing: border-box !important;
 }
 
-/* En-tête */
-.history-header h1 {
-    margin: 0;
-    color: #1a202c;
-    font-size: 2rem;
+/* ==========================================================================
+   3. BARRE DE FILTRES (TYPE ET TEMPS)
+   ========================================================================== */
+.filters-container {
+    display: flex !important;
+    justify-content: space-between !important;
+    background: white !important;
+    padding: 20px 30px !important;
+    border-radius: 15px !important;
+    margin-bottom: 30px !important;
+    /* Petite ombre pour décoller les filtres du fond gris */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02) !important;
+    border: 1px solid #edf2f7 !important;
 }
 
-.history-header p {
-    color: #718096;
-    margin-top: 5px;
+.filter-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
 }
 
-/* Barre de filtres (Boutons Tout, Chutes, etc.) */
-.filter-bar {
-    margin: 25px 0;
-    display: flex;
-    gap: 12px;
-}
-
+/* Style des boutons "Tout", "Chutes", "Cœur" */
 .filter-bar button {
-    padding: 10px 20px;
-    border: 1px solid #e2e8f0;
-    background: white;
-    color: #4a5568;
-    cursor: pointer;
-    border-radius: 8px;
-    font-weight: 500;
-    transition: all 0.2s;
+    background-color: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+    padding: 10px 20px !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease; /* Animation fluide au clic */
 }
 
+/* Style du bouton quand il est sélectionné */
 .filter-bar button.active {
-    background: #2d3748;
-    color: white;
-    border-color: #2d3748;
+    background-color: #2d3748 !important;
+    color: white !important;
+    border-color: #2d3748 !important;
 }
 
-/* Tableau d'historique */
+/* Style du menu déroulant (Select) */
+.time-select {
+    padding: 10px !important;
+    border-radius: 8px !important;
+    border: 1px solid #e2e8f0 !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+}
+
+/* ==========================================================================
+   4. TABLEAU DE L'HISTORIQUE
+   ========================================================================== */
 .table-container {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
+    background: white !important;
+    border-radius: 15px !important;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05) !important;
+    /* "overflow-x: auto" permet de scroller horizontalement sur mobile */
+    overflow-x: auto !important;
 }
 
 .history-table {
-    width: 100%;
-    border-collapse: collapse;
+    width: 100% !important;
+    border-collapse: collapse !important; /* Supprime les espaces entre les bordures */
 }
 
 .history-table th {
-    background-color: #f7fafc;
-    padding: 15px;
-    text-align: left;
-    color: #4a5568;
-    font-weight: 600;
-    border-bottom: 2px solid #edf2f7;
+    background-color: #f7fafc !important;
+    padding: 18px !important;
+    text-align: left !important;
+    color: #718096 !important;
+    font-size: 0.8rem !important;
+    text-transform: uppercase !important; /* Titres en majuscules pour le look "pro" */
+    border-bottom: 2px solid #edf2f7 !important;
 }
 
 .history-table td {
-    padding: 15px;
-    border-bottom: 1px solid #edf2f7;
-    color: #2d3748;
+    padding: 18px !important;
+    border-bottom: 1px solid #edf2f7 !important;
 }
 
-/* Ligne critique (Chute) */
+/* Couleur de fond si la ligne est une chute (Rouge très pâle) */
 .row-critical {
-    background-color: #fff5f5;
+    background-color: #fff5f5 !important;
 }
 
-/* Badges de couleur */
+/* ==========================================================================
+   5. BADGES DE STATUT
+   ========================================================================== */
 .badge {
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-weight: bold;
-    font-size: 0.75rem;
-    display: inline-block;
+    padding: 6px 14px !important;
+    border-radius: 20px !important;
+    font-weight: 700 !important;
+    font-size: 0.75rem !important;
+    display: inline-block !important;
 }
 
-.badge.CHUTE { background: #fee2e2; color: #dc2626; }
-.badge.CARDIAQUE { background: #e0f2fe; color: #0284c7; }
+/* Couleurs dynamiques selon le type d'alerte */
+.badge.CHUTE { background-color: #fee2e2 !important; color: #dc2626 !important; }
+.badge.CARDIAQUE { background-color: #e0f2fe !important; color: #0284c7 !important; }
 
-.btn-view {
-    background: #edf2f7;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
+/* Style du texte "SMS Envoyé" (Action automatique du serveur) */
+.status-auto-sent {
+    color: #38a169 !important;
+    font-weight: 800 !important;
+    font-size: 0.85rem !important;
+}
+
+/* ==========================================================================
+   6. MODALE DE CONTACT
+   ========================================================================== */
+.modal-overlay {
+    position: fixed !important; /* Reste fixé à l'écran même au scroll */
+    top: 0; left: 0;
+    width: 100% !important; height: 100% !important;
+    background: rgba(0,0,0,0.6) !important; /* Fond semi-transparent */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 2000 !important;
+}
+
+.modal-content {
+    background: white !important;
+    width: 400px !important;
+    border-radius: 20px !important;
+    padding: 30px !important;
+    /* Animation pour que la modale "monte" à l'ouverture */
+    animation: slideUp 0.3s ease-out !important;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Style des liens WhatsApp cliquables dans la modale */
+.contact-option {
+    display: flex !important;
+    justify-content: space-between !important;
+    padding: 15px !important;
+    margin-bottom: 10px !important;
+    background: #f1f5f9 !important;
+    border-radius: 12px !important;
+    text-decoration: none !important;
+    color: #1a202c !important;
+    font-weight: 700 !important;
+    transition: 0.2s;
+}
+
+/* Changement de couleur au survol (Vert WhatsApp) */
+.contact-option:hover {
+    background-color: #25d366 !important;
+    color: white !important;
 }

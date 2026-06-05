@@ -4,12 +4,10 @@ import './Sidebar.css';
 
 const Sidebar = () => {
     const navigate = useNavigate();
-    const location = useLocation(); // Pour savoir sur quelle page on est
+    const location = useLocation();
 
     const handleLogout = () => {
-        // Supprime le token et les infos utilisateur
         localStorage.clear(); 
-        // Redirige vers la page de login
         navigate('/login');
     };
 
@@ -21,7 +19,6 @@ const Sidebar = () => {
             </div>
 
             <nav className="sidebar-menu">
-                {/* La classe "active" s'ajoute si on est sur la bonne page */}
                 <Link to="/dashboard" className={`menu-item ${location.pathname === '/dashboard' ? 'active' : ''}`}>
                     <span className="icon">🏠</span> Dashboard
                 </Link>
@@ -33,6 +30,10 @@ const Sidebar = () => {
                 <Link to="/contact" className={`menu-item ${location.pathname === '/contact' ? 'active' : ''}`}>
                     <span className="icon">📞</span> Contacts
                 </Link>
+
+                <Link to="/mentions-legales" className={`menu-item ${location.pathname === '/mentions-legales' ? 'active' : ''}`}>
+                    <span className="icon">⚖️</span> Mentions Légales
+                </Link>
             </nav>
 
             <div className="sidebar-footer">
@@ -43,5 +44,4 @@ const Sidebar = () => {
         </div>
     );
 };
-
 export default Sidebar;

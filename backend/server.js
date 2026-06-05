@@ -278,3 +278,12 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Serveur demarre sur le port ${PORT}`);
 });
+
+app.put('/api/alerts/:id', (req, res) => {
+    const { statut } = req.body;
+    const sql = "UPDATE alerts SET statut = ? WHERE id = ?";
+    db.query(sql, [statut, req.params.id], (err, result) => {
+        if (err) return res.status(500).json(err);
+        res.json({ message: "Statut mis à jour !" });
+    });
+});

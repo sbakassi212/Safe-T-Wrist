@@ -1,131 +1,143 @@
-/*  BLANC SUR TOUT L'ÉCRAN (Écrase les bandes sombres) */
+/* Thème Médical PC - CONNEXION LARGEUR MAX & SANS SCROLL */
+@import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap');
+
+:root {
+  --med-blue: #3687a4;      /* Bleu bouton médical */
+  --header-cyan: #5cecec;   /* Cyan titre */
+}
+
 body, html { 
-    margin: 0 !important; 
-    padding: 0 !important; 
-    height: 100vh !important; 
-    width: 100vw !important;
-    overflow: hidden !important; /* Empêche le scroll pour tout voir d'un coup */
-    background-color: #ffffff !important; 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0; 
+  padding: 0; 
+  height: 100vh; 
+  width: 100vw;
+  overflow: hidden; /* Supprime le scroll */
+  background-color: #ffffff !important; /* FOND BLANC PUR */
+  font-family: 'Segoe UI', sans-serif;
 }
 
-/*CENTRE LE FORMULAIRE SUR FOND BLANC*/
+/* On utilise .login-container pour matcher ton fichier login.jsx */
 .login-container {
-    height: 100vh !important;
-    width: 100vw !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    background-color: #ffffff !important;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff !important; 
 }
 
-/*LE FORMULAIRE BLANC ET LARGE */
-.login-form {
-    background-color: #ffffff !important;
-    width: 90% !important;
-    max-width: 1100px !important; 
-    padding: 40px 80px !important;
-    border-radius: 20px !important;
-    text-align: center !important;
-    /* Ombre très légère pour le relief sur fond blanc */
-    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.05) !important; 
-    border-top: 12px solid #3687a4 !important; /* Bordure Bleue */
-    box-sizing: border-box !important;
+/* La boîte de connexion (identique à ta .register-form) */
+.login-box {
+  background: white;
+  width: 90%; 
+  max-width: 1000px; /* Grande largeur PC */
+  padding: 40px 60px; 
+  box-sizing: border-box;
+  text-align: center;
+  border-top: 8px solid var(--med-blue);
+  border-radius: 15px;
+  box-shadow: 0 5px 30px rgba(0,0,0,0.05);
 }
 
-/* 4. LE TITRE CYAN  ET GÉANT ET SUR UNE LIGNE */
-.login-form h2 {
-    color: #5cecec !important;
-    font-size: 45px !important;
-    font-weight: 700 !important;
-    margin: 0 0 10px 0 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 1px !important;
-    white-space: nowrap !important; /* Empêche le titre de se couper */
+/* Titre Cyan */
+.login-box h2 {
+  color: var(--header-cyan);
+  font-size: 38px;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+  text-transform: uppercase;
 }
 
-.login-form p {
-    color: #888 !important;
-    font-size: 18px !important;
-    margin-bottom: 30px !important;
+.login-box p {
+  color: #888;
+  font-size: 16px;
+  margin-bottom: 40px; 
 }
 
+/* Groupes d'input */
 .input-group {
-    margin-bottom: 20px !important;
-    width: 100% !important;
-    max-width: 850px !important; 
-    margin-left: auto !important;
-    margin-right: auto !important;
-    text-align: left !important;
+  margin-bottom: 25px; 
+  width: 100%;
+  max-width: 800px; 
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
 }
 
 .input-group label {
-    display: block !important;
-    font-size: 18px !important;
-    font-weight: 600 !important;
-    margin-bottom: 6px !important;
-    color: #333 !important;
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
 }
 
 .input-group input {
-    width: 100% !important;
-    padding: 16px 20px !important; 
-    font-size: 18px !important;
-    border: 2px solid #dce4ec !important;
-    border-radius: 12px !important;
-    background: #fbfdff !important;
-    box-sizing: border-box !important;
+  width: 100%;
+  padding: 16px 20px; 
+  font-size: 18px;
+  border: 1.5px solid #dce4ec;
+  border-radius: 8px;
+  background: #fbfdff;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
 }
 
 .input-group input:focus {
-    outline: none !important;
-    border-color: #3687a4 !important;
-    background: #fff !important;
+  outline: none;
+  border-color: var(--med-blue);
 }
 
-/*LE BOUTON SE CONNECTER*/
-.login-button {
-    width: 100% !important;
-    max-width: 850px !important;
-    padding: 22px !important;
-    background-color: #3687a4 !important; /* COULEUR BLEUE */
-    color: #ffffff !important;           /* TEXTE BLANC */
-    border: none !important;
-    border-radius: 12px !important;
-    font-size: 26px !important;
-    font-weight: 700 !important;
-    cursor: pointer !important;
-    margin: 15px auto 0 auto !important;
-    text-transform: uppercase !important;
-    display: block !important;
+/* Bouton bleu médical */
+.login-btn {
+  width: 100%;
+  max-width: 800px;
+  padding: 20px; 
+  background-color: var(--med-blue);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 15px;
+  text-transform: uppercase;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  transition: opacity 0.2s;
 }
 
-.login-button:hover {
-    background-color: #2c6e88 !important;
+.login-btn:hover {
+  opacity: 0.9;
 }
 
-/* 7. LIEN VERS L'INSCRIPTION */
-.register-link {
-    margin-top: 25px !important;
-    font-size: 16px !important;
-    color: #666 !important;
+/* Lien vers inscription */
+.login-footer {
+  margin-top: 30px;
+  font-size: 16px;
+  color: #666;
 }
 
-.register-link a {
-    color: #3687a4 !important;
-    text-decoration: none !important;
-    font-weight: 700 !important;
-    margin-left: 8px !important;
+.login-footer a {
+  color: var(--med-blue);
+  text-decoration: none;
+  font-weight: 700;
 }
 
-/*MESSAGE D'ERREUR*/
+.login-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Style pour l'erreur si elle s'affiche */
 .error-message {
-    color: #ff4d4d !important;
-    background: #fff2f2 !important;
-    padding: 8px !important;
-    border-radius: 8px !important;
-    font-weight: 600 !important;
-    max-width: 850px !important;
-    margin: 0 auto 15px auto !important;
-    font-size: 14px !important;
+    background-color: #fff5f5;
+    color: #c53030;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 600;
 }

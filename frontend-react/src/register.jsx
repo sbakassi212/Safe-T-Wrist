@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-// CORRECTION : api.jsx est maintenant dans le même dossier
 import { authService } from './api'; 
 import './register.css';
 
